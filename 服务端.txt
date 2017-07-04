@@ -1,0 +1,8 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2015-08-14T14:48:28+08:00
+
+====== 服务端 ======
+Created 星期五 14 八月 2015
+
+* response.setHeader(“Access-Control-Allow-Origin”, “*”); 允许跨域调用，需要浏览器支持cors

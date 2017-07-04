@@ -1,0 +1,158 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2016-01-30T18:20:00+08:00
+
+====== inwifi ======
+Created 星期六 30 一月 2016
+
+1. 关于$("xxx").scrollTop()获得的值为0的问题-------------html文档无任何doctype声明,才可以解决此问题.
+2. 通过jquery获取iframe 内的元素并定义鼠标事件,事件触发时事件属于父窗口. 
+3. 屏蔽浏览器右键: 一个页面中，BODY中用oncontextmenu='return false'来取消鼠标右键；在JS中设置oncontextmenu='return true'用window.document.oncontextmenu = function(){ return false;}
+4.div height100%无效
+5.window.document.oncontextmenu = function(){ return false;};   取消右键响应
+6.jqueyr hover也许可以解决mouseover mouseout闪烁的问题
+7.调用iframe内的js函数$(window.parent.document).contents().find("#iframename")[0].contentWindow.iframefunction();
+8.hibernate修改后新旧数据交替出现的问题解决办法: 查询前 session.clear();
+9.hibernate保存数据后,必须refresh一下可以得到最新数据;
+
+10. luci 添加applications的方法：
+	   a.在applications 下写好app
+	   b.修改contrib/luci 下makefile，使得在make menuconfig时新app可见，拷到feeds/luci下相应位置
+	   c. menuconfig时选中新app即可
+	   d. app源码拷贝到./build_dir下luci相应目录，上一部将导致源码重新解压，如果先拷贝新app会被覆盖，所以放最后一步，之后正常make即可
+	   e. 国际化请参考官网,别makefile里需要加上PO=XXX的参数
+	   f.  文件要用unix编码
+
+		修改默认语言：root@sfg-virtual-machine:/home/sfg/inwifi/trunk/build_dir/target-mips_r2_uClibc-0.9.33.2/luci-0.11+svn9948/libs/web/root/etc/config# 
+		修改init.d/wifidog脚本：./feeds/packages/net/wifidog 里的wifidog.init
+		修改crontab:/package/base-files/files/etc/crontabs#  自动重启
+		开启无线并设置SSID:/package/mac80211/files/lib/wifi#mac80211.sh 里最后option项
+		默认密码：/package/base-files/files/etc#shadow
+
+		设置pptp: 
+				(1) trunk下,新建files/etc/config/network ,配置写到network里就可以,些法可以解决配置被覆盖的问题
+				(2) trunk/packages/ppp/........../options.pptp   添加refuse-eap,以便登录server 2003 vpn,不然只能登录xp建立的vpn
+		wifidog 出错自动重启：
+				(1)在/usr/bin下添加文件wifidog-crontab,内容如下：
+#!/bin/sh
+#copy to /usr/bin/
+#function to restart wifidog if wifidog fail
+#20140623
+
+
+wifidog_error_handle()
+{
+	local Uptime=$(wdctl status | grep 'Uptime')
+	if [ "$Uptime" == "" ] ; then
+		/usr/bin/wifidog-init start
+		logger "wifidog fail, now restart"
+	else
+		logger "wifidog is ok"
+	fi
+}
+
+wifidog_Enable=$(uci get wifidog.wifidog.Enable)
+if [ "$wifidog_Enable" == "1" ] ; then 
+	wifidog_error_handle
+else
+	/usr/bin/wifidog-init stop
+	logger "wifidog is disable"
+fi
+		   (2)修改crontab:/package/base-files/files/etc/crontabs#  每隔一分钟运行/usr/bin/wifidog-crontab          */1 * * * * /usr/bin/wifidog-crontab
+
+11.linux 修改主机名，在etc/config/system里
+
+12.数据库中consumer表里，identifier和timecount用于短信认证，
+
+13.class.forName(""); 路径要带包名
+
+14.修改myeclipse打开时编码：window/preference/general/contentype
+
+15.gdb debug wifidog:http://wiki.openwrt.org/doc/devel/gdb
+	wifidog makefile在feeds/package下
+
+16.x86版的端口映射有问题，filter 表链缺少iptables -t filter -A zone_wan_forward -p tcp -s 192.168.1.200 -d 192.168.199.210 -j ACCEPT 
+	x86正常的将外部的某个端口映射到内部某个IP某个端口没有问题，上面这条是指从外部直接访问内部某个IP时用到（发起访问的主机可以把默认网关指向wan口地址）
+
+17. git cherry-pick 可以提交另一个分支上的某次修改（而不是另一个分支上某次提交及其之前的所有修改(merge)）
+
+18. dnsmasq 地址范围: cat /tmp/etc/dnsmasq.conf
+
+19.更改luci_statistics创建rrd数据库时的CF设定：
+	更改配置文件：/etc/config/luci_statistics   interface -> option RRASingle '0' collectd_rrdtool -> option RRASingle '0'; 应该是第二个选项起作用
+	启动collectd：/etc/init.d/colectd start   /etc/init.d/luci_statistics
+
+20. goagent upload.exe不能上传的问题，把账号设置里不安全账号的访问策略改成允许
+
+21.mysql 导出表结构：mysqldump -u xxx -p -d --all-databases            -d 表示不要数据
+21.1 mysql -u root -h 192.168.1.201 -P 6033 -p 连接数据库
+	update user set password=password("123456") where user="root" and host="%";
+	insert into user (user,host,password) values ("root","%","123456");
+	show index from tablename
+22.mysql mysqld_safe --defaults-file=/etc/mysql/my_wifi.cnf
+23.mysql_install_db --basedir=/usr/ --datadir=/data/mysql_all_data/ --user=mysql  初始化新的数据库
+24.mysql install 完成后还需要在basedir下建立inodb并给用户mysql权限才可以用mysqld_safe启动
+25.更改数据库里字段的部分：update application set url=replace(url,"pri.yimian.com.cn" ,"192.168.1.201")
+	创建用户：CREATE USER 'username'@'host' IDENTIFIED BY 'password';
+	grant all privileges on db_58 to sfg@"%" identified by "sfg";
+	grant all on db_58.* to datamaster@"%" identified by "datamaster";
+	flush privileges;
+	show grants for datamaster@'%';
+
+26.DEGUB版本：make package/wifidog/{clean,compile} V=99 CONFIG_DEBUG=y STRIP=/bin/true
+
+27.coredump:
+	touch /.init_enable_core
+	sysctl -w "kernel.core_pattern=/tmp/sda/%e.%p.%s.%t.core"
+28.nginx 配置一个路径指向一个文件的方法
+ try_files $uri /path/path1/file.exe
+29.nginx 403 错误有可能是下载的文件对象用户组要有读写权限
+路径指向文件可以通过return 302 xxxxxxxxx 来进行重定向
+
+30.不能用nginx反向代理到wifidog，因为wifidog读取请求时需要反解请求IP的MAC地址，代理的话反解到的是本地的MAC
+
+31.libhttpd addwildfilecontent 可以将某个目录作为web服务目录
+
+32.openvpn 操作
+	183.131.12.34 22051
+	cat /data/logs/openvpn/openvpn-status.log
+	
+	201上：
+		/home/zhangjinjie/openvpn/easy-rsa-2.2.2/easy-rsa/2.0/pkitool ROUTERNAME   生成某个路由的KEY
+	将/home/zhangjinjie/openvpn/easy-rsa-2.2.2/easy-rsa/2.0/keys 相应key拷贝到路由上
+	重命名路由上的openvpn配置文件里的key文件名
+	
+33.opkg install md5sum mismatch
+	注释掉/etc/opkg.conf里面第一行src pacages这一句即可，这样可以直接安装本地或者互联网上面的ipk，而不需要校验源里面的md5
+
+34.获取字符串md5
+	echo -n 'admin'|md5sum|cut -d ' ' -f1
+35.vi 替换：0,$s/abc/cvb/g
+36.路由显示器分辨率不调整：nomodeset
+37.set gfxpayload=800x600x24
+38. linux /boot/vmlinuz root=/dev/sda2 rootfstype=ext4 rootwait console=tty1
+ console=ttyS0,38400n8 noinitrd quiet splash nomodeset
+39.开白名单：iptables -t mangle -A WiFiDog_br-lan_Trusted -m mac --mac-source 00:23:34:12:34:23 -j MARK --set-mark 2
+40. supervisord  remove 再add 可以更新应用配置
+41.urllib2.urlopen 设置content-type 为application/json,然后 data参数使用标准 JSON字符串，发送的POST请求可以被flask request.data request.get_json识别
+42.nginx reload : ./sbin/nginx -s reload
+43.nginx 检查配置文件是否正确：./sbin/nginx -t -c /usr/local/nginx/conf/nginx.conf
+44. 内核IP路由表: netstat -rn
+
+45. 查看google的IP段: nslookup -q=TXT _netblocks.google.com 8.8.8.8
+46. fuser 文件名 查看文件占用情况
+47. nginx xreal-ip 配置有可能会阻止原始cookie传递
+48. python2.7 安装：
+	下载python.tar
+	./configure
+	make && make install
+	下载ez-setup.py
+	python2.7 ez-setup.py
+	easy_install-2.7 pip安装pip2.7
+49. centos mysqld5.1升级到mysql5.5:
+	rpm源设置
+	删除原有
+	database书签文件夹
+	mysql_upgrade -h xx -u lskajdk -p
+
+50. netgear开端口映射需要关闭upnp

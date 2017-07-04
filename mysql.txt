@@ -1,0 +1,158 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2015-08-25T15:53:09+08:00
+
+====== mysql ======
+Created 星期二 25 八月 2015
+
+* 时间转换：SELECT up_rate, down_rate, FROM_UNIXTIME(create_timestamp, '%Y-%m-%d %H:%i:%s') FROM user_rate where user_id = 184123 order by up_rate desc
+* 1.查看数据库表基本信息。
+select * from information_schema.TABLES where information_schema.TABLES.TABLE_SCHEMA = '数据库名' and information_schema.TABLES.TABLE_NAME = '表名';
+
+* 2.查看mysql数据库大小
+SELECT sum(DATA_LENGTH)+sum(INDEX_LENGTH) FROM information_schema.TABLES where TABLE_SCHEMA='数据库名';
+得到的结果是以字节为单位，除1024为K，除1048576(=1024*1024)为M。
+
+* 3.查看表的最后mysql修改时间
+select TABLE_NAME,UPDATE_TIME from information_schema.TABLES where TABLE_SCHEMA='数据库名' order by UPDATE_TIME desc limit 1; 
+select TABLE_NAME,UPDATE_TIME from information_schema.TABLES where TABLE_SCHEMA='数据库名' and information_schema.TABLES.TABLE_NAME = '表名'; 
+
+* datamaster@'%' %表示所有ip 但是不包括localhost，而127.0.0.1与localhost是一样的含义，所以也不行
+	mysql 命令不指定-h默认通过socket连接，	mysql --socket=/tmp/xxx.sock
+	datamaster@'%' %表示所有ip 但是不包括localhost，而127.0.0.1与localhost在user表里是一样的含义，所以也不行
+	当-h=localhost, 强制从socket连接，而不是从127.0.0.1这个ip连接，所以写localhost要这样写：
+	mysql -h localhost -u datamaster -p --socket=/tmp/mysql_bigdata.sock
+	
+* 创建临时表并从select插入数据：create temporary table db.temp  (SELECT * FROM mysql.user where User='datamaster');
+* 导出表结构并与线上结构比较(dump出结构然后diff文件)：mysqldump -u root -P 6033 -p -h 192.168.1.201 -d infographics > infographics_dev.struct
+
+
+* MySQL can use multiple-column indexes for queries that test all the columns in the index, or queries that test just the first column, the first two columns, the first three columns, and so on. If you specify the columns in the right order in the index definition, a single composite index can speed up several kinds of queries on the same table.
+	多列index: c1, c2, c3
+	可以使用index的查询： c1, c1 and c2, c1 and c2 and c3
+	不可以使用index的查询：c2, c3, c2 and c3 
+
+* show variables like '%timeout' 查看mysql各种timeout设置
+* 复制一条记录的方法：
+	1) CREATE TEMPORARY TABLE tmptable SELECT * FROM table WHERE primarykey = 1;
+	UPDATE tmptable SET primarykey = 2 WHERE primarykey = 1;
+	INSERT INTO table SELECT * FROM tmptable WHERE primarykey = 2;
+	
+	2) INSERT INTO table (col1, col2, col3, ...)
+	SELECT col1, col2, col3, ... FROM table
+	  WHERE primarykey = 1
+	
+* 建索引：ALTER TABLE `db_58`.`estate_rent` 
+ADD INDEX `cdate` (`crawl_date` ASC);
+
+* 建临时表，建索引，查询示例：
+	begin;
+	DROP TABLE IF EXISTS db_fang.special;
+	
+	create temporary table db_fang.special (SELECT xq_code,city_code FROM db_fang.xiaoqu_info  group by xq_code 
+		having min(cur_household) = -1 and max(cur_household) > 0);
+	
+	alter table db_fang.special add index xq_code (xq_code);
+	alter table db_fang.special add index city_code (city_code);
+	
+	SELECT 
+		origin.*
+	FROM
+		db_fang.xiaoqu_info AS origin
+			LEFT JOIN
+		db_fang.special AS special ON origin.xq_code = special.xq_code
+			AND origin.city_code = special.city_code
+	WHERE
+		special.xq_code IS NULL
+			OR (special.xq_code IS NOT NULL
+			AND origin.cur_household != - 1);
+	commit;
+
+
+* 选出某个分组里某值最大的一条或者最小的一条，两种方法：
+	1）先order by 然后group by， group by会返回最上面一条
+		select scoreid,chinese,math max_math from (select * from lkscore order by math desc) T group by scoreid;
+	2) 子查询取出分数最值，然后where 等于该最值，有两个一样最值的时候会取出两条，需要limit
+		select scoreid,chinese,math max_math from lkscore a where a.math = 
+		(select max(math) from lkscore where scoreid = a.scoreid) order by scoreid asc;
+
+* explain一条语句，可以查看语句即将执行的情况
+
+* mysql5.5 安装在centos6.5相关:
+	centos6.5的直接yum安装的是mysql5.1的各种，如果安装到mysql5.5后，安装相关libs时： yum install mysql55w-devel mysql55w-libs
+* centos7 安装mysql yum源：sudo rpm -Uvh http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm ， 然后可以用yum安装mysql-server
+* mysql_install_db 后揭示：
+	To start mysqld at boot time you have to copy
+	support-files/mysql.server to the right place for your system
+	
+	PLEASE REMEMBER TO SET A PASSWORD FOR THE MySQL root USER !
+	To do so, start the server, then issue the following commands:
+	
+	  /usr/bin/mysqladmin -u root password 'new-password'
+	  /usr/bin/mysqladmin -u root -h yinkunwifi password 'new-password'
+	
+	Alternatively you can run:
+	
+	  /usr/bin/mysql_secure_installation
+	
+	which will also give you the option of removing the test
+	databases and anonymous user created by default.  This is
+	strongly recommended for production servers.
+	
+	See the manual for more instructions.
+	
+	You can start the MySQL daemon with:
+	
+	  cd /usr ; /usr/bin/mysqld_safe &
+	
+	You can test the MySQL daemon with mysql-test-run.pl-
+	
+	  cd mysql-test ; perl mysql-test-run.pl
+	
+	Please report any problems at http://bugs.mysql.com/
+	
+	The latest information about MySQL is available on the web at
+	
+	  http://www.mysql.com
+	
+	Support MySQL by buying support/licenses at http://shop.mysql.com
+	
+	New default config file was created as /usr/my.cnf and
+	will be used by default by the server when you start it.
+	You may edit this file to change server settings
+	
+	WARNING: Default config file /etc/my.cnf exists on the system
+	This file will be read by default by the MySQL server
+	If you do not want to use this, either remove it, or use the
+	--defaults-file argument to mysqld_safe when starting the server
+	
+* mysql刚启动时设置root密码： mysqladmin -u root --socket=/tmp/mysql.sock password 'admin'
+* 编辑/etc/my.cnf添加[mysql]段，可以设置默认socket等
+
+* 更改字段中的字符串：update application set url=replace(url, 'pri.yimian.com.cn', 'pri.yinkun.io'); 
+* sql中使用变量：http://stackoverflow.com/questions/13548118/can-i-use-a-variable-to-specify-outfile-in-mysql
+
+* 给一个用户只读权限：
+	create user 'wankemit'@'%' identified by '3baa18d7';
+	grant select on db_fang.* to wankemit@'%' identified by '3baa18d7';
+	flush privileges;
+* 从csv导入数据： 要求列的顺序和数据库顺序一致
+	LOAD DATA LOCAL INFILE '/home/sufagang/tmp/user.csv' INTO TABLE user FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 ROWS
+	set register_time = date_add(register_time, interval 8 hour), last_login_time = date_add(last_login_time, interval 8 hour), createdAt = date_add(createdAt, interval 8 hour), updatedAt = date_add(updatedAt, interval 8 hour);
+	
+* alter table xxxx AUTO_INCREMENT = 1;
+* 显示列表信息, 包括列注释等: show full columns from stock_pledge
+* 命令行上直接执行sql: mysql -h  192.168.1.201 -P 6033 -uroot -p123456 -e "select user,host,password from mysql.user";
+* show grants for sfg@'%'; 可以查看用户权限状态
+* 不锁表查询：
+	SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
+	SELECT * FROM TABLE_NAME ;
+	SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
+
+* information_schema.INNODB_TRX 里面是innodb正在跑的transaction, 有时候show processlist某个进程已经sleep, 但其 transaction还在跑, 这时候需要再kill 已经sleep的进程
+* 显示当前登录用户: select user();
+* 存储过程: grant create on procedure *.* to datamaster@'10.8.0.%' identified by 'datamaster';
+
+
+
+

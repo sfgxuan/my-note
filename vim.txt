@@ -1,0 +1,100 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2015-08-20T11:08:24+08:00
+
+====== vim ======
+Created 星期四 20 八月 2015
+
+* vim c/python等自动补全插件：https://github.com/Valloric/YouCompleteMe
+* vimrc: https://github.com/amix/vimrc
+* vim插件管理工具：vundle
+* 代码折叠
+zo 展开
+zc 收起
+zn 全部展开
+zN 全部折叠
+
+* vim起新生不自动添加注释：set paste
+* 显示特殊符号: set list
+* http://coolshell.cn/articles/5426.html 基本操作资料，没事可以看看
+
+* 显示所有插件:
+	" where was an option set
+	:scriptnames : list all plugins, _vimrcs loaded (super)
+	:verbose set history? : reveals value of history and where set
+	:function : list functions
+	:func SearchCompl : List particular function
+
+* q操作记录 --- qa - 开始记录到a寄存器，q 结束录制; 10@a 执行a记录10次
+* "操作寄存器, "ayy ---> "ap, "Ayy 使用大写字母可以追加内容到相应的寄存器
+* "*/+p粘贴系统剪贴板， "*/+yy， 在jetbrain vim插件中可用
+* q: 显示命令历史
+* ctrl + o, p 临时跳出insert模式，操作一次再回到insert模式
+* yaw 复制当前单词， daw删除当前词， caw删除当前词并进入插入模式
+* vi]选中[]里面的内容
+
+* vim分屏
+	使用大写的O参数来垂直分屏。
+	vim -On file1 file2 ...
+	使用小写的o参数来水平分屏。
+	vim -on file1 file2 ...
+	n表示分屏数
+
+* # * 在光标下的单词间前后跳转， set hlsearch  // nohlsearch
+* [[/\csearchword]] searchword 不区分大小写
+	set ic/ set noic 区分大小写开关
+	
+* ：1, $s / old / new / g 全文替换， 如果用正则匹配\d+要写成\d\+, +、*、()都要转义
+* :r [[/file/aslkdf]]
+* set bomb可以加BOM, set nobomb可以去除BOM
+* 目录浏览功能：
+	netrw插件是vim的标准插件，在.vimrc中只要设置了
+		set nocp "不与vi兼容
+		filetype plugin on "允许插件
+	就可以使用netrw插件了。
+	netrw插件的项是网络读写，但我们经常用到的却是它的目录浏览功能(取代了先前的explore.vim)。
+	打开目录命令
+	Ex[plore]   打开当前目录或指定目录
+	Se[xplore] 分割并打开当前目录或指定目录He[xplore]
+	Ve[xplore] 垂直分割并打开当前目录或指定目录
+	Te[xplore] 新建标签并打开当前目录或指定目录
+	浏览文件
+	移动光标到感兴趣的文件或目录，按<cr>即可在当前窗口浏览该文件或目录；按p键在预览窗口中浏览该文件；按P键在上次使用的窗口中浏览该文件。
+	命令列表
+	<cr>   netrw 进入目录或读入文件 |netrw-cr|
+	<del>  netrw 试图删除文件/目录 |netrw-del|
+	  -    netrw 往上走一层目录 |netrw--|
+	  a    在以下三种方式间切换: 正常显示，|netrw-a|
+		   隐藏 (不显示匹配 g:netrw_list_hide 的文件) 和
+		   显示 (只显示匹配 g:netrw_list_hide 的文件)
+	  c    使浏览中的目录成为当前目录 |netrw-c|
+	  d    建立目录 |netrw-d|
+	  D    netrw 试图删除文件/目录 |netrw-D|
+	  i    在瘦、长、宽和树形的各种列表方式间切换 |netrw-i|
+	<c-l>  netrw 刷新目录列表 |netrw-ctrl-l|
+	  o    打开新浏览窗口，进入光标所在的目录。使用水平分割。|netrw-o|
+	  p    预览文件 |netrw-p|
+	  P    在前次使用的窗口里浏览 |netrw-P|
+	  r    反转排序顺序 |netrw-r|
+	  R    给指定的文件/目录换名 |netrw-R|
+	  s    选择排序方式: 按名字、时间或文件大小排序 |netrw-s|
+	  S    指定按名字排序的后缀优先级 |netrw-S|
+	  t    在新标签页里打开光标所在的文件/目录 |netrw-t|
+	  v    打开新浏览窗口，进入光标所在的目录。使用垂直分割。|netrw-v|
+	
+* 多窗口操作：
+	http://blog.chinaunix.net/uid-24673811-id-1994607.html
+	
+* 在.vimrc中添加以下代码后，重启vim即可实现按TAB产生4个空格：
+set ts=4  (注：ts是tabstop的缩写，设TAB宽4个空格)
+set expandtab
+
+* 跳到上一次编辑处：'.  `.  ctrl+i  ctrl+o g; g, gi
+* gt, gT,tabn,tabp在tab间跳转，tabe tab中打开文件
+* ctrl +r  + ", 可以在search时粘贴yank的值
+* [[/\vsearchstring可以不以正则解析]] searchstring, 不过如果searchstring里有/，还是需要转义
+* g/^[ ]*$/d 删除空行
+* [[:args]] 可以显示当前打开的文件, [[:ls]] 也可以
+* set hidden 可以不需要保存就切换不同buffer
+* vim 改变大小写: ~大小写切换, u变小写, U变大写
+

@@ -1,0 +1,9 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2015-12-31T17:28:57+08:00
+
+====== 缩写 ======
+Created 星期四 31 十二月 2015
+
+* OEM = Original Equipment Manufacturer
+* DMI = desktop management interface

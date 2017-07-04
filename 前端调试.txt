@@ -1,0 +1,15 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2015-10-05T17:02:34+08:00
+
+====== 前端调试 ======
+Created 星期一 05 十月 2015
+
+* chrome://memory-redirect/ 查看内存使用情况
+* --single-process chrome单线程模式
+* chrome performance.memory可以查看js heap memory使用情况
+* 查内存泄漏三步法：
+	1. snapshot1 然后做操作A
+	2. snapshot2 然后做同样的操作A
+	3. snapshot3 在snapshot3中查看snapshot1到snaphot2过程中分配的对象
+	https://docs.google.com/presentation/d/1wUVmf78gG-ra5aOxvTfYdiLkdGaR9OhXRnOlIcEmu2s/pub?start=false&loop=false&delayms=3000&slide=id.g31ec7af_0_58

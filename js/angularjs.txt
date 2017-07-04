@@ -1,0 +1,34 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2015-08-05T13:00:45+08:00
+
+====== angularjs ======
+Created 星期三 05 八月 2015
+
+* a标签target='_self'，可以使用angularjs忽略该标签上的路由：
+	<a target='_self' href="#change-psw" aria-controls="change-psw" role="tab" data-toggle="tab">修改密码</a>
+* $rootScope:inprog 错误解决：https://docs.angularjs.org/error/$rootScope/inprog
+	当$apply()或者$digest()在执行过程中，又调起$apply()或者digest()，即嵌套，会引发上述报错。
+	解决办法：使用$timeout(function(){ * do something*}),使得需要调用的部分异步执行即可
+
+* 预加载template
+	<script type='text/ng-template' id='helloTemplateInline.html'>
+	<div>Hi there</div>
+	</script>
+	
+* watchGroup和watchCollection没有第三个表示watch深度的选项
+* ng-bind 以text的形式插入内容到元素中，ng-bind-html以html的形式插入内容到元素中，即$.text()和$.html()的区别
+	ng-bind-html插入的html需要$sce模块认证后返回
+	
+* ng-if 与 ng-repeat在同一个元素上，有时候scope.$last一直为空，即循环不到结尾处
+* isolate scope 用等号绑定的模型需先绑定到元素的某个属性上，不能直接等于父scope的某个属性值
+* factory, service, provider 三种创建service的方法：
+	factory 直接返回包括方法和数据的对象
+	service 定义对象的构造函数
+	provider 可能config进行初始化，直接返回对象
+
+* ng-model doesn't work in ng-if 因为ng-if为创建child scope，可用命ng-show/hide代替，或者使用ng-model='$parent.attr'
+	一般使用ng-model与scope里的对象的属性绑定，而不是直接与scope的属性绑定，该方法也可解决上述问题
+	
+* directive里面link定义的函数不能定义到directive的子元素上，除非了元素是通过template或者translude添加的
+* 可以watch一个function, 实现计算属性；也可使用getter实现计算属性

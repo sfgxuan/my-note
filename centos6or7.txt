@@ -1,0 +1,27 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2016-02-24T12:13:43+08:00
+
+====== centos6or7 ======
+Created 星期三 24 二月 2016
+
+* centos7 更改主机名：sudo hostnamectl set-hostname yinkunwifi
+* centos7 安装mysql yum源：sudo rpm -Uvh http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm ， 然后可以用yum安装mysql-server
+* 查看版本cat /etc/redhat-release
+* 安装字体：
+	1. 将字体拷到/usr/share/fonts/local 下， local是自建文件夹；如果是只想给某个用户添加字体，拷贝到~/.fonts下
+	2. fc-cache <新字体文件路径>  加载字体
+	参考资料：https://www.centos.org/docs/5/html/Deployment_Guide-en-US/s1-x-fonts.html
+	查看字体列表： fc-list
+
+* 重启sshd: service sshd restart
+* 安装ifconfig: yum install net-tools
+* centos 6 service + chkconfig, centos7 systemctl        
+	chkconfig --list
+		 chkconfig firewalld off
+	systemctl disable xxxx 关闭开机启动
+	systemctl stop xxxx 关闭已开启的服务
+* centos7查看版本号: cat [[/etc/redhat-release]]
+
+* firewall-cmd --get-active-zones
+* firewall-cmd --zone=public --add-port=2888/tcp --permanent

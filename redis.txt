@@ -1,0 +1,20 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2015-11-30T10:45:50+08:00
+
+====== redis ======
+Created 星期一 30 十一月 2015
+
+* NOAUTH Authentication required 错误：
+	127.0.0.1:6379> CONFIG set requirepass "tutorialspoint"
+	OK
+	127.0.0.1:6379> CONFIG get requirepass
+	1) "requirepass"
+	2) "tutorialspoint"
+	
+	After setting the password if any client runs command without authentication, then (error) NOAUTH Authentication required. error will return to that. So client needs to use AUTH command to authenticate himself.
+
+* select num 切换db
+* redis-server 启动方式：redis-server /etc/redis/aksldjl.conf
+* redis-server 启动时要提前创建数据目录
+* pubsub channels 可以查看当前的频道

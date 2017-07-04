@@ -1,0 +1,28 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2015-12-04T18:13:25+08:00
+
+====== ios ======
+Created 星期五 04 十二月 2015
+
+* wifibao freewifi_v1.0.8 更新provision profile问题
+
+	1）本地用keychain > 钥匙串访问 > 证书助理 > 从证书颁发机构请求证书，创建新的csr文件
+	2）将csr文件上传到develop center, 生成并下载xxx.cer文件，双击加到系统中。此时keychain证书那里应该可以看到刚创建的证书并且私钥是正确的
+		应将该证书导出成p12文件并保存起来，1可以其它mac电脑使用，2防止私钥不小心丢失
+	3）用xcode打开源码，并做如下设置：
+		a）General settings 选择正确的Team (fix issue)
+		b) build settings enable bitcode 设置为false, 防止build一些二进制库时报错
+		c）product > scheme > edit scheme ， 切换build版本是debug版还是release版
+		d）build settings > codesign settings 设置正确的provision profile
+		e）info.plist 添加：  //跳过ios9安全机制，1022错误 
+			<key>NSAppTransportSecurity</key>
+			<dict>
+			<key>NSAllowsArbitraryLoads</key>
+			<true/>
+			</dict>
+		f）product > build for > running
+		g）product archive 导出ipa文件（save for enterprise deployment）
+
+
+* ipa文件位置：38/data/app/op/freewifi/

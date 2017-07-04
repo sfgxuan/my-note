@@ -1,0 +1,49 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2015-08-08T20:55:25+08:00
+
+====== html&css ======
+Created 星期六 08 八月 2015
+
+* 表格的rules 和 frame属性可以控制哪些边框显示或者隐藏
+* 表格的border-collapse属性是collapse时，有些css无效，如border-radius
+* input元素当内容为空时，光标位置偏的解决办法：line-height不指定多少px，而指定为100%,同时给定input高度为多少像素
+* background-size: cover 或者 100% 50%
+* a里面不能包含a
+* textarea没有value属性值，要写成<textarea>内容</textarea>
+* 如果两个inline元素在不同行，其间会有letter-spacing, 连在一起写则不会出现间隔,like（<span></span>）
+
+* 移动浏览器输入框获得焦点时自动zoom in问题： <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+
+* 防止选中页面文字
+	webkit-user-select: none/auto;
+	-moz-user-select: none/auto;
+	-webkit-user-drag: none/auto;
+	
+* 选中文字时文字背景
+	::selection {
+	color: #fff; //文字颜色
+	background-color: rgba(201,94,87,.6); //背景颜色
+	}
+
+* style标签， link标签都可以放到body内，但是微信公众平台编辑器会把style标签去掉
+* 设置文字不换行，超过的部分用“...”代替
+ overflow: hidden;
+ text-overflow: ellipsis;
+ white-space: nowrap;
+ width: 210px;
+
+* css 垂直居中：
+	.element {
+	  position: relative;
+	  top: 50%;
+	  transform: translateY(-50%);
+	}
+
+* svg 要点：
+	当不指定preserveAspectRatio时，默认viewbox是尽可能充满viewport, 默认xMidYMid meet
+	http://www.zhangxinxu.com/wordpress/2014/08/svg-viewport-viewbox-preserveaspectratio/
+	
+* css命名规范 - BEM
+* clear只当前面有float元素时有意义
+* css动画可以走折线，使用@keyframes这个属性控制路径点，PS: datapipeline.com

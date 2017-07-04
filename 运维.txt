@@ -1,0 +1,55 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2016-01-05T21:46:08+08:00
+
+====== 运维 ======
+Created 星期二 05 一月 2016
+
+* dell 服务器管理软件 open manage system administrator (omsa)
+* 安装dell omsa(open manage system administrator)
+	wget -q -O - http://linux.dell.com/repo/hardware/Linux_Repository_15.07.00/bootstrap.cgi | bash //安装yum源
+	yum install -y yum install srvadmin-storageservices
+	
+	[[/opt/dell/srvadmin/sbin/srvadmin-services.sh]] start 启动服务，该服务正常启动了以下其它命令才可以正常运行
+	
+	/opt/dell/srvadmin/bin/omreport chassis                     # 显示所有主要组件的常规状态 
+	/opt/dell/srvadmin/bin/omreport chassis memory              # 显示内存信息
+	/opt/dell/srvadmin/sbin/omreport  chassis temps             # 显示系统主要组件的温度
+	/opt/dell/srvadmin/bin/omreport storage adisk controller=0  # 查看磁盘陈列中的硬盘状态
+	/opt/dell/srvadmin/bin/omreport storage pdisk controller=0  # 查看物理磁盘信息
+	/opt/dell/srvadmin/bin/omreport storage vdisk controller=0  # 查看虚拟硬盘的状态
+	/opt/dell/srvadmin/bin/omreport storage controller          # 查看控制器(即RAID卡)的属性
+	/opt/dell/srvadmin/bin/omreport storage channel controller=0    # 查看通道的属性
+	/opt/dell/srvadmin/bin/omreport storage enclosure controller=0  # 查看enclosure的属性
+	/opt/dell/srvadmin/bin/omreport storage battery                 # 查看电池属性
+	/opt/dell/srvadmin/bin/omconfig storage controller action=setrebuildrate controller=0 rate=100            # 调整rebuild的速度
+	/opt/dell/srvadmin/bin/omconfig  storage vdisk  action=changepolicy controller=0 vdisk=0 readpolicy=ara   # 修改raid的读策略
+	/opt/dell/srvadmin/bin/omconfig  storage vdisk  action=changepolicy controller=0 vdisk=0 writepolicy=fwb  # 修改raid的写策略
+
+* 所有装centos 6.x的r820 机器都不支持OMSA, shit
+
+* 201vmware windows服务器报错：
+	could open /dev/vmmon: No such file or directory.
+	Please make sure that the kernel module `vmmon' is loaded.
+	
+	解决办法：
+		cd /tmp
+		tar -xzvf /usr/lib/vmware/modules/source/vmmon.tar
+		cd vmmon-only/
+		make
+		cp vmmon.ko /lib/modules/2.6.32-504.el6.x86_64/misc/vmmon.ko
+		modprobe vmmon
+
+
+* 机房服务器主频突然变得很低的问题：
+	http://en.community.dell.com/support-forums/servers/f/956/t/19616718
+	http://www.ponjavic.com/wordpress/2014/09/30/disable-dell-poweredge-m620-cpu-throttling/
+	这两个帖子提到的，应该是bios的bug, 服务器默认的省电模式：The default setting for System Profile in System Profile Settings is Performance Per Watt (DAPC). We’ll change this to Performance.
+	会导致cpu进入极低的频率然后回不来。这时候热重启没有用，需要硬重启才能解决问题。
+	解决办法是：更改默认的模式，避免因省电进入低频模式。
+	Note that CPU Power Management has been changed to Maximum Performance, and C1E and C States have been disabled. These cause the CPU to be throttled. When the CPU is idle it can be instructed to conserve energy by entering a low powered state. Several different “states” exist. For example C1E state (for Intel’s CPUs) called “Enhanced Halt”, is software controlled and essentially reduces CPU voltage and stops CPU main internal clocks. All these various states are referred to as C States.
+	
+	相关问题：http://ju.outofmemory.cn/entry/82191 "cpu 0000 cpu1"报错
+
+* dell iDRAC小系统: root calvin 默认
+

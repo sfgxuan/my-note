@@ -1,0 +1,50 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2015-10-14T22:43:54+08:00
+
+====== mongo ======
+Created 星期三 14 十月 2015
+
+* mongo 127.0.0.1/nodebb -unodebb -pWentu123
+* mongo URI: mongodb://user:passwd@127.0.0.1/wentu
+* 查看当前用户：db.runCommand({connectionStatus : 1})
+* 创建root用户：
+	1.use admin
+	
+	db.createUser(
+	{
+	user: "root",
+	pwd: "password",
+	roles: [ "root" ]
+	}
+	)
+	
+	2.使用root登录： mongo 127.0.0.1/admin -uroot -ppassword  
+
+* 执行脚本load('asdf.js')
+* 给用户添加角色： db.grantRolesToUser('infographics',['userAdmin','readWrite'])
+* mongo shell:
+	print('asdf')
+	printjson(obj)
+	
+* mongodb dump备份：
+	mongodump --host 127.0.0.1 --port 27017 --username infographics --password infographics -d wentu --out /data/backup/wentu/mongo.bak
+	mongorestore --host 127.0.0.1 --port 27017 --username infographics --password infographics -d wentu_restore /data/backup/wentu/mongo.bak/wentu/
+* db.user.find({'createdAt': {'$gt': new Date('2016-1-29')}},{createdAt: 1}).pretty( )
+* db.user.find({createdAt: {$gt: new Date('2016-5-31'), $lt: new Date('2016-5-31 23:59:59')}}).count()
+* 更新某个字段: db.document.update({id_hash: 'd02abe30a8f72cb8'}, {$set:{removed:false}})
+* db.group 是一个函数，用作collection名查询时需用db.getCollection('group')
+
+* mongo导出csv:
+	mongoexport --db wentu --collection user --type=csv --fields username,password --out user.csv
+	mongoexport --host 127.0.0.1 -u infographics -p infographics --db wentu --collection user  --out user.json
+	
+* mongo移动data文件夹后：
+	一般新移动的文件夹权限可能是root
+	但是/etc/init.d/mongod启动mongo时是用的mongodb这个用户的权限
+	所以一般要更改移动或者复制后的文件夹/文件的权限
+	
+* db.user.update({email: /^.+@58.com$/}, {$set: {type: 30}}, {multi: true}) 默认只更新一条，加multi: true才会更新全部
+* mongo 3.2版本不再有system.indexes表，只能使用db.collection.getIndexes()查看索引
+* db.document.createIndex({user:1}, {sparse:true}) 创建index, sparse表示没有该字段的文档不创建index
+	

@@ -1,0 +1,9 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2015-08-13T18:30:24+08:00
+
+====== handsontable ======
+Created 星期四 13 八月 2015
+
+* handsontable的loadData需要在bootstrap shown.bs.modal事件中调用，之前调用不能正确渲染，操
+* handsontable的getData()返回的结果不能直接操作，会引起页面响应变慢，可copy一份再进行操作

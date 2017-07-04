@@ -1,0 +1,26 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2015-08-07T11:31:29+08:00
+
+====== jquery ======
+Created 星期五 07 八月 2015
+
+* 获得元素top left: $('').offset()
+* trigger的第二个参数可以传递参数，但是需要使用on绑定响应，不然参数无法传递
+* trigger通过event传递数据的方法：
+	var event = $.Event('click', {sourceMark: 'note-editor'});
+	$('body').trigger(event);
+	$('body').click(function(e){
+		console.log(e.sourceMark)
+	});
+
+* jquery 1.11.3: checkbox 设置选中用$.prop('checked', true/'checked'), attr函数貌似不好使了
+* 判断checkbox 是否选中$.is(':checked') 结果同$.prop('checked')
+* 查看jquery版本$.fn.jquery
+* $._data($('#edit-panel')[0]).events || $._data($('#edit-panel')[0], 'events')查看用jquery绑定在某元素上的事件
+* jquery sortable 不会自动滚动页面：设置overflow:visible, 不能是overflow:auto
+* 全选选择器$('*') find('*')
+* 解除所有函数绑定： $(something).unbind()
+* $.post 默认提交数据时的content-type 是 application/x-www-form-urlencoded, 要使用application/json, 可使用$.ajax
+* 页面里iframe内部触发的事件, 不能冒泡到父窗口
+* element.style.somestyle 只能读取在元素标签上直接指定的样式, 而不能读取css文件中的样式定义; $.css('somestyle')得到的是computed style

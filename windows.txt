@@ -1,0 +1,8 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2015-10-22T11:15:48+08:00
+
+====== windows ======
+Created 星期四 22 十月 2015
+
+* sc delete 服务名          可删除一个服务

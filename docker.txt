@@ -1,0 +1,23 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2016-02-01T14:21:07+08:00
+
+====== docker ======
+Created 星期一 01 二月 2016
+
+* docker 常见问题：http://dockerpool.com/article/1413082493
+* docker history xxx  可以查看xxx镜像的layer信息
+* https://github.com/docker/docker/blob/master/contrib/check-config.sh 检查系统是否支持docker
+* 把用户加到docker组，用户可以使用docker相关命令
+* docker使用简单步骤：
+	yum install -y docker-engine
+	serice docker start
+	docker pull someIMAGE
+	docker run blabla
+	
+	
+* 启动mysql: docker run --name docker-mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=yimian -v /data/docker-mysql/:/var/lib/mysql -d mysql
+* 启动owncloud: docker run -d -p 5000:80 -v /data/owncloud:/var/www/html --link docker-mysql:mysql --name=owncloud owncloud.    访问页面后要先创建数据库再提交初始化信息，不然总报错
+* 连接到一个正在运行的container: docker exec -i -i containerNameOrId [[/bin/bash]]
+
+* 启动已存在的container: docker start container-name

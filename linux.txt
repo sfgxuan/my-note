@@ -1,0 +1,60 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2015-07-29T12:16:00+08:00
+
+====== linux ======
+Created 星期三 29 七月 2015
+
+cat /var/dhcp.leases 查看dhcp情况
+iw dev wlan0 station dump 查看连接用户的情况
+cat /proc/net/nf_conntrack | grep "src=100.1.1.144" 查看nat table
+ cat /proc/net/nf_conntrack | grep "src=100.1.1.221" | awk -F " " '{print $8 $9}'
+ln -s 真实目标 快捷方式 创建连结档
+tftp -g -r file.file ipaddress
+wget ftp://sfg:sfg@192.168.199.178/fa.sb 下载文件
+cat /proc/mtd 查看flash layout
+dmesg 开机信息
+cat /proc/mounts 查看分区挂载信息
+iptables -t nat -nvL MINIUPNPD 查看upnp
+/etc/init.d/miniupnp XXXX   upnp操作
+cat /tmp/upnp.leases
+/etc/hosts 修改dns解析
+cat /proc/net/arp 查看arp
+find . -name "*.o" -type f -print -exec rm {} \; 删除某类型文件
+cat /proc/62/limits 查看limits
+/proc/sys/kernel/core_pattern
+touch /.init_enable_core  the first will enable core dumps on all applications started with busybox init
+sysctl -w "kernel.core_pattern=/tmp/sda/%e.%p.%s.%t.core"  the second will tell the kernel where to store the core dumps
+curl -O http://115.29.36.102/download/12.wmv
+expr length http://dl.wifibao.im/gofs/60/60784397672bf3b9f4dd3a3a419b05be.jpg) 计算字符串长度
+echo $a a中的换行将变为空格， echo “$a” 输出可以保留空格
+
+linux 设置默认网关 route add default gw 192.168.1.1
+linux 删除路由 route del -net 10.8.0.0 netmask 255.255.255.0
+向进程发信号kill -s SIGINT `ps axu | grep "crawl_58_rent.py" | awk '{print $2}'`
+查看系统发行版：cat /etc/issue
+
+
+centos 网络配置：
+	vi /etc/sysconfig/network-scripts/ifcfg-eth0:1
+	 
+	DEVICE=eth0:1
+	ONBOOT=yes
+	BOOTPROTO=static
+	IPADDR=新增IP
+	NETMASK=子网掩码
+	GATEWAY=网关地址
+
+	最后service network restart
+	添加新IP地址后：ifup device 名称
+
+	
+查看某程序端口号netstat -anp|grep ssh
+
+bzip2 -d xxx.tar.bz2 解压bz2的文件到xxx.tar, 然后再用tar解压
+
+service php-fpm restart 重启phpmyadmin
+
+ubuntu桌面图标路径：/usr/share/applications
+git rm -r --cached 从版本库中移除
+du -smh * 查看文件夹大小

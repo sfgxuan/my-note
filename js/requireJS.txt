@@ -1,0 +1,9 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2015-09-02T12:56:09+08:00
+
+====== requireJS ======
+Created 星期三 02 九月 2015
+
+* define('模块名称', [依赖]，function(){返回模块对象}).
+* 模块名称不存在时是匿名模块，匿名模块在require引入时可以随意指定名称，而命名模块在引入时名称必须和定义时候一致不然不能引入

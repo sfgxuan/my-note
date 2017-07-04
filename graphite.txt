@@ -1,0 +1,22 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2016-01-19T17:40:29+08:00
+
+====== graphite ======
+Created 星期二 19 一月 2016
+
+* graphite 安装坑
+	1. 下载安装pixman， http://cairographics.org/releases/
+	2. 下载安装cairo, 需要设置PKG_CONFIG_PATH环境变量要包含pixman-1.pc
+	3. 下载安装py2cairo, 同样需要设置如2类似的环境变量包含cairo.pc
+	4. pip install django django-tagging pytz
+	5. pip install twisted=15.0.0 后面安装carbon默认会装一个最新版的twisted，而15.0.1以后的twisted不支持python2.6,fuck
+		pip install git+https://github.com/twisted/twisted.git@twisted-15.5.0#egg=twisted 
+	6. pip install https://github.com/graphite-project/ceres/tarball/master
+		pip install git+https://github.com/graphite-project/whisper.git@0.9.15#egg=whisper
+		pip install git+https://github.com/graphite-project/carbon.git@0.9.15#egg=carbon
+		pip install git+https://github.com/graphite-project/graphite-web.git@0.9.15#egg=graphite-web
+	7. 还有各种其它依赖
+
+* 0.9.15 graphite 的render在django 1.9.1下起不来，里面用了django已经废弃的一些方法，django1.8.7下可以起来
+* http://blog.csdn.net/cnweike/article/details/36862847 稍微好一点的安装到使用的资料

@@ -1,0 +1,8 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2017-06-26T18:12:42+08:00
+
+====== 其它 ======
+Created 星期一 26 六月 2017
+
+* Done is better than perfect

@@ -1,0 +1,9 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2015-09-11T18:32:58+08:00
+
+====== echarts ======
+Created 星期五 11 九月 2015
+
+* echarts数据系列：将数据点设置成'-'或者undefined可以得到中断效果的曲线，设置成空字符串则补成0
+* echart2.X 的构建工具：https://github.com/ecomfe/echarts-optimizer

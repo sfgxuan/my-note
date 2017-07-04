@@ -1,0 +1,124 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2015-07-30T12:15:07+08:00
+
+====== 各种神奇命令 ======
+Created 星期四 30 七月 2015
+
+* 查看当前目录下所有文件/文件夹大小：du -smh *
+* 清空文件：echo > syslog.log
+* top + shift m可以按内存排序
+* 清空memory map: echo 3 > [[/proc/sys/vm/drop_caches]]
+* cat [[/etc/shells]] 查看现有哪些shell
+* cd -P . 切换到当前目录的实际目录
+* sudo ifconfig eth0 mtu 1512 更改某个网络接口mtu
+* dd if=/dev/zero of=/tmp/dummy.txt bs=1M count=10 可以查看io速度
+* centos时间设置：
+  cp /usr/share/zoneinfo/Asia/Shanghai [[/etc/localtime]] 
+  ntpdate us.pool.ntp.org
+
+
+
+* lsof 列出所有打开文件  ls open files
+
+* xxx | awk  '{ print strftime("%Y-%m-%d %H:%M:%S"), $0; fflush(); }' 在输出行前面加日期时间
+* initctl show-config   查看程序启动点
+* lastlog 查看linux用户登录
+* man number command 查看某个man级别
+* ldd --version 查看glibc版本 yum list glibc
+* readlink -f 文件，可以得到文件完全路径+文件名
+* netstat -s 查看各协议统计
+* ss -s 查看端口使用情况
+* [[/usr/share/applications]] 下可以修改启动器图标
+* root: dmidecode -t 1 可以查看系统型号信息
+* cat [[/proc/mdstat]] 查看系统软raid, 或者直接df, 会看到md设备
+* 查看硬raid : yum install lshw pciutils; lspci | grep -i raid
+* parted 别一个分区工具，支持GUPT
+* biosdecode 查看bios信息
+* cat [[/proc/scsi/scsi]] 查看scsi磁盘
+
+* dmraid device-mappger software RAID tool
+* getSystemId 得到系统标识信息
+* nc 发起监听tcp/udp的工具
+* 查看图像信息： identify -format "%w x %h %x x %y" -units PixelsPerInch preview_doc_1996caf50ed3c1ea.png
+* pushd +n, popd, dirs -v, dirs -c
+* rsync -vzrtopgu --progress --port=22058 --password-file=/etc/rsync/rsync.pw /data/backup/wentu yimian@172.16.24.9::wentu_mongo_backups
+* sudo mii-tool -V em1 查看网卡link信息            ethtool也可以用
+* cat /proc/sys/kernel/threads-max 查看最大线程数
+* cat [[/proc/sys/net/ipv4/ip_local_port_range]] 查看商品范围
+* ps axms 查看线程信息，ps axms | wc - l 查看线程数
+* nproc = maximum number of processes 与cpu核心数一致
+* ps -L -u search | wc -l 查看用户进程数
+* ulimit -u 用户进程数限制
+* 查看打开文件数lsof | wc -l
+* [[/etc/security/limits.conf]] 修改ulimit限制, [[/etc/security/limits.d]] 里也可以设置
+* centos更改@后面的主机名 [[/etc/sysconfig/network]]
+* sudoers 不用密码：yk ALL=(ALL) NOPASSWD: ALL
+* .profile login shell是不读取的
+* cd 用户名可以直接进入用户的家目录，用户家目录可以在/etc/passwd下面定义，不一定是/home/user
+* 批量替换文件中的字符串： sed -i "" "s/www.admin99.net/admin99.net/g" `grep www.admin99.net -rl [[/home`]]
+	-r recursive   -l 打印匹配的文件名
+* iconv/uconv 可以转换文件编码, uconv 可以给文件加bom
+* (printf "\357\273\277";cat utf.csv) > utf1.csv 也可以给文件加bom
+* ps xl 可以显示父进程id, ps l --ppid somepid 可以查看某个进程的子进程
+* mount 查看挂载信息
+* grep sss | sort | uniq   distinct grep
+* md5sum <<< 'hello' ; md5sum 可以接受标准输入`echo -n 'hello'|md5sum|cut -d ' ' -f1， -n 选项表示字符串不带后面的换行
+* df -i 可查看已使用inode情况
+* [[/etc/environment]] 设置系统的环境变量; [[/etc/profile]] 设置所有用户的环境变量
+* 文件头#! [[/usr/bin/env]] python, 当python路径不对时,可以用这种写法, 不需要再care python安哪去了
+* ping 192.168.1.1 | while read pong; do echo "$(date): $pong"; done             -------------            ping时显示时间
+* find . -type l          ---------------              查找当前目录下所有符号链接
+* rsync -P --rsh=ssh home.tar 192.168.0.34:/home/home.tar 传输文件：-P 表示显示过程；--rsh表示使用ssh传输
+* 查看网口建链速度：cat [[/sys/class/net/em1/speed]]
+* 查看cpu频率：cat [[/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq]]
+* cpu实时频率查看:
+	1. yum install -y cpufrequtils
+	2. cpufreq-info
+	3. 如果上面命令提示缺少freq驱动： modprode intel_pstate 
+			  不同的机器可能该模块在的位置不一样: [[/lib/modules/2.6.32-431.29.2.el6.x86_64/kernel/arch/x86/kernel/cpu/cpufreq]]
+																			[[/lib/modules/2.6.32-431.29.2.el6.x86_64/kernel/drivers/cpufreq]]
+																			
+* 重启：shutdown -r +1 'comment'; 使用reboot 或者 halt有的系统可能是表示关机的意思？
+* 查看内存使用量：http://blog.yld.io/2015/08/10/debugging-memory-leaks-in-node-js-a-walkthrough/#.V5WrAJO7hBc
+	ps -p $pid -o rss,vsz
+	top -pid $pid
+	
+* ps axf 查看线程树
+* crontab 运行时的进程是crond fork出来的，所以其环境变量也是继承过来的，一般都不是用户自己的环境变量。 需要的环境变量可以在crontab -e 时设置
+* Linux中set,env和export这三个命令的区别
+	set命令显示当前shell的变量，包括当前用户的变量;
+	env命令显示当前用户的变量;
+	export命令显示当前导出成用户变量的shell变量。
+	　　每个shell有自己特有的变量（set）显示的变量，这个和用户变量是不同的，当前用户变量和你用什么shell无关，不管你用什么shell都在，比如HOME,SHELL等这些变量，
+	　　但shell自己的变量不同shell是不同的，比如BASH_ARGC， 
+	BASH等，这些变量只有set才会显示，是bash特有的，export不加参数的时候，显示哪些变量被导出成了用户变量，因为一个shell自己的变
+	量可以通过export “导出”变成一个用户变量。
+	
+* shell中各种大括号的作用  http://blog.csdn.net/taiyang1987912/article/details/39551385
+* cat [[/etc/groups]] 可以看到都有哪些用户组
+* lsof -p pid 可以查看进程打开了哪些文件
+* lsof 的用法:
+	1)搜索被某一进程打开的相关文件:
+			  #lsof -p 5225
+		  2)查看被打开某一文件的相关进程信息:
+		 #lsof /proc
+	3)查看网络连接
+	   查看监听端口25的进程:
+	   #lsof -i:25
+	   查看活动的连接：
+	   #lsof -i @192.168.1.171
+	4)查看某个用户的打开的文件
+	   #lsof -u root(root用户打开的文件)
+	   #lsof -u ^root(非root用户打开的文件)
+	5) lsof  [[/path/to/file]] 可以查看哪些进程在使用指定文件
+	
+* 查看正在运行的程序的路径: sudo ls -al [[/proc/$pid/exe]]
+* 查看正在运行的程序的当前目录: pwdx $pid
+* 查看nginx 当前配置: nginx -V
+* 查看进程状态: cat [[/proc/$pid/status]]
+* iptables 配置存储位置/etc/sysconfig/iptables
+* inotify watch数量设置:  fs.inotify.max_user_watches=32768;    [[/proc/sys/fs/inotify/max_user_watches]]; tail -f 可以查看是否inotify已经达到上限
+* 查看inotify watch 数量:  lsof | grep inotify | wc -l
+* su username -c "command" 可以以某user运行某命令
+* id -u root 可以查看某user ID, id -g group 可以查看某group ID

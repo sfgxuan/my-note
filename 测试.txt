@@ -1,0 +1,8 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2016-07-04T20:47:35+08:00
+
+====== 测试 ======
+Created 星期一 04 七月 2016
+
+* 烟雾测试： 确保软件基本功能正确的测试。一般由版本编译者执行

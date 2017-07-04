@@ -1,0 +1,8 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2015-09-17T11:41:09+08:00
+
+====== http ======
+Created 星期四 17 九月 2015
+
+* chrome://net-internals/#hsts 可以查看设置https相关信息

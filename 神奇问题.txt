@@ -1,0 +1,40 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2015-10-27T21:38:36+08:00
+
+====== 神奇问题 ======
+Created 星期二 27 十月 2015
+
+* ==== 本地某个电脑（ubuntu)突然不能访问40的服务 ====
+
+	现象：
+		也不能ssh或者telnet或者随意开的一个socket接口
+		可以ping通
+		其它同属于一个nat下的电脑大部分可以访问，个别电脑也不能访问
+		过一断时候又可以正常访问或者连接
+		无特定场景可以复现问题
+	解决步骤：
+	1. 在服务端抓包，发现服务端收到了建立tcp连接的请求，但不做任何回应，导致tcp连接无法建立
+	2. 对比可以正常回应的数据包和不能正常回应的数据包，发现二层,ip层数据包均没有本质区别，考虑到可以ping通说，说明ip层本身也没有问题
+	3. 对比tcp层数据包，发现在window size和options.timestamps TSval上有所不同，于是查找这两者所起的作用
+	4. http://stackoverflow.com/questions/8893888/dropping-of-connections-asteriskwith-tcp-tw-recycle
+		a. 这篇提到，如果tcp_tw_recycle启用，那么在nat后面的主机的timestamp在服务端是混乱的，会导致服务器的recycle机制出错，一些主机无法连接服务器 
+		b. 而出问题服务器的tcp_tw_reuse, tcp_tw_recycle, tcp_timestamps 都处于启用状态
+	5. http://serverfault.com/questions/664655/linux-clients-cant-connect-server-and-tcp-windows-size-timestamps-issue 这篇提到：
+			a.Both users are behind the same NAT device (in our case, a Fortigate firewall). This firewall will assign local ports on it's external interface/IP to each NAT'ed connection. If the port is already in use to another user, it is skipped. If the connection is closed, the port is released and returned to the NAT pool. If that port is then assigned to the other user, but the server still has some record of the connection (TIME_WAIT, final FIN/ACK not received) and the timestamp of the packet is lower of that of the previous connection, the packet will be silently disgarded.
+		6.最后解决办法：
+			tcp_tw_reuse = 1, tcp_timestamps = 1 timestamp的使用和tw_use的使用将确保tcp端口复用冲突（这需要客户端也启用timestamps, 这个默认都是启用）
+			但如果再开启tcp_tw_recycle, 就会出现冲突so: tcp_tw_recycle=0
+			(net.ipv4.tcp_window_scaling 有说法这个也要关闭，但是会引动性能问题，从原理上讲这个应该是不需要关闭的）
+			建议使用更短更合适的tcp_timewait_len
+	7. 综上：
+		a. tcp_tw_reuse = 1
+		b. tcp_timestamps = 1
+		c. tcp_tw_recycle=0
+		d. tcp_timewait_len 可以小一些
+
+* =========== 使用mysqldump 备份数据库时，报错runtime/cgo: pthread_create failed: Resource temporarily unavailable ===================
+	1. 感觉应该是允许的线程数量用尽了
+	2. 更改ulimit -u (max user processes), 就好了，可是这说的不是进程数么?! 但是经查实max user processes 说的是线程数，fuck me!!!!!!!!
+	其它问题：http://www.tuicool.com/articles/73E7F3   关键就是: 系统调用阻塞时大量生成内核级线程导致的 , 而cgo启用的情况下, 每一次DNS查询,都会起动一个系统线程! 于是卡的时候资源耗尽
+

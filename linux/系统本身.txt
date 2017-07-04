@@ -1,0 +1,54 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2015-07-29T12:17:06+08:00
+
+====== 系统本身 ======
+Created 星期三 29 七月 2015
+
+===== 运行级别 =====
+
+* 运行级别 0 - 6
+　　0：关机。不能将系统缺省运行级别设置为0，否则无法启动。
+　　1：单用户模式，只允许root用户对系统进行维护。
+　　2：多用户模式，但不能使用NFS（相当于Windows下的网上邻居）
+　　3：字符界面的多用户模式。
+　　4：未定义。
+　　5：图形界面的多用户模式。
+　　6：重启。不能将系统缺省运行级别设置为0，否则会一直重启
+
+* runlevel可以查看运行级别，显示上一次和当前运行级别，不存在上一次运行级别，则用N表示
+* '无法连接到RDP服务器' — vi .freerdp/know_hosts
+* 查看cpu温度：
+	yum install -y lm_sensors
+	sensors-detect 
+	sensors
+
+* ubuntu开机启动机制：
+	老的init.d机制
+	upstart 基于事件的机制 /lib/init/upstart-job
+
+* 各种信号定义
+1) SIGHUP   2) SIGINT   3) SIGQUIT  4) SIGILL   5) SIGTRAP
+ 6) SIGABRT  7) SIGBUS   8) SIGFPE   9) SIGKILL 10) SIGUSR1
+11) SIGSEGV 12) SIGUSR2 13) SIGPIPE 14) SIGALRM 15) SIGTERM
+16) SIGSTKFLT   17) SIGCHLD 18) SIGCONT 19) SIGSTOP 20) SIGTSTP
+21) SIGTTIN 22) SIGTTOU 23) SIGURG  24) SIGXCPU 25) SIGXFSZ
+26) SIGVTALRM   27) SIGPROF 28) SIGWINCH    29) SIGIO   30) SIGPWR
+31) SIGSYS  34) SIGRTMIN    35) SIGRTMIN+1  36) SIGRTMIN+2  37) SIGRTMIN+3
+38) SIGRTMIN+4  39) SIGRTMIN+5  40) SIGRTMIN+6  41) SIGRTMIN+7  42) SIGRTMIN+8
+43) SIGRTMIN+9  44) SIGRTMIN+10 45) SIGRTMIN+11 46) SIGRTMIN+12 47) SIGRTMIN+13
+48) SIGRTMIN+14 49) SIGRTMIN+15 50) SIGRTMAX-14 51) SIGRTMAX-13 52) SIGRTMAX-12
+53) SIGRTMAX-11 54) SIGRTMAX-10 55) SIGRTMAX-9  56) SIGRTMAX-8  57) SIGRTMAX-7
+58) SIGRTMAX-6  59) SIGRTMAX-5  60) SIGRTMAX-4  61) SIGRTMAX-3  62) SIGRTMAX-2
+63) SIGRTMAX-1  64) SIGRTMAX
+
+* [[~/.profile]] 先于 ~/.zshrc起作用，然后.zshrc的设置对于非loginshell不起作用
+
+* raid
+	 raid0 就是把多个（最少2个）硬盘合并成1个逻辑盘使用，数据读写时对各硬盘同时操作，不同硬盘写入不同数据，速度快。
+		raid1就是同时对2个硬盘读写（同样的数据）。强调数据的安全性。比较浪费。
+		raid5也是把多个（最少3个）硬盘合并成1个逻辑盘使用，数据读写时会建立奇偶校验信息，并且奇偶校验信息和相对应的数据分别存储于不同的磁盘上。当RAID5的一个磁盘数据发生损坏后，利用剩下的数据和相应的奇偶校验信息去恢复被损坏的数据。相当于raid0和raid1的综合。
+		raid10就是raid1+raid0，比较适合速度要求高，又要完全容错，当然￥也很多的时候。最少需要4块硬盘（注意：做raid10时要先作RAID1，再把数个RAID1做成RAID0，这样比先做raid0，再做raid1有更高的可靠性）
+
+* recovery mode修改root密码：1.修改grub内核启动选项ro recovery nomodeset ⇒ rw single init=/bin/bash, 2.ctrl + x进入root
+	http://www.linuxidc.com/Linux/2013-01/78558.htm

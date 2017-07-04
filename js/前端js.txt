@@ -1,0 +1,81 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2015-07-30T10:11:26+08:00
+
+====== 前端js ======
+Created 星期四 30 七月 2015
+
+* html2canvas 通过将某个元素或者整个页面重画到canvas，然后通过canvas可以导出成图片。
+	不能完整支持css,有显示上的小问题。老版本图片显示的清晰度不够
+
+
+== 各种高度 ==
+
+网页可见区域宽：document.body.clientWidth
+网页可见区域高：document.body.clientHeight
+网页可见区域宽：document.body.offsetWidth(包括边线的宽)
+网页可见区域高：document.body.offsetHeight(包括边线的宽)
+网页正文全文宽：document.body.scrollWidth
+网页正文全文高：document.body.scrollHeight
+网页被卷去的高：document.body.scrollTop(IE7无效)
+网页被卷去的左：document.body.scrollLeft(IE7无效)
+
+网页被卷去的高：document.documentElement.scrollTop(IE7有效)
+
+网页被卷去的左：document.documentElement.scrollLeft(IE7有效)
+网页正文部分上：window.screenTop
+网页正文部分左：window.screenLeft
+屏幕分辨率的高：window.screen.height
+屏幕分辨率的宽：window.screen.width
+屏幕可用工作区高度：window.screen.availHeight
+屏幕可用工作区宽度：window.screen.availWidth
+
+相对于窗口左上角的X：window.event.clientX
+
+相对于窗口左上角的Y：window.event.clientY
+相对于整个页面的X：window.event.X
+相对于整个页面的Y：window.event.Y
+
+==== 前端文件下载 ====
+* jquery 模拟a标签的触发，需要选中a标签内的某个元素然后.click或者.trigger('click')。直接选中a标签然后click无效
+* html5 a标签的download属性可以直接表示要下载href指向的资源。download='保存为的文件名'
+
+==== 文件上传 ====
+* jquery-file-upload插件
+* jquery.form.js直接写也许更方便些：http://malsup.com/jquery/form/progress.html
+
+==== 模拟鼠标选中元素 ====
+* function selectText(containerid) {
+		if (document.selection) {
+			var range = document.body.createTextRange();
+			range.moveToElementText(document.getElementById(containerid));
+			range.select();
+		} else if (window.getSelection) {
+			var range = document.createRange();
+			range.selectNode(document.getElementById(containerid));
+			window.getSelection().addRange(range); //可以先selection.removeAllRanges()然后再加
+		}
+	}
+* https://www.hscripts.com/scripts/JavaScript/select-div-tag.php
+* oncopy onpaste oncut 事件有clipboardData对象，可以设置被复制内容或者获取粘贴内容
+	$('#sfg')[0].onpaste = function(e){ console.log(e.clipboardData.getData('text/html')) }
+	$('.page')[0].oncopy = function(e){e.clipboardData.setData('text/html', 'xxxxxxxxxxxxsfg'); console.log(e.clipboardData.getData('text/html'))}
+	
+	var n,i,r,o;if(r=function(){var t;return t=e.currentTarget.innerHTML,t=t.trim().replace(/^&nbsp;|&nbsp;$/gi,"").trim()},n=null!=e&&null!=(o=e.originalEvent)?o.clipboardData:void 0)return n.setData("text/html",r()),e.preventDefault();if(n="undefined"!=typeof window&&null!==window?window.clipboardData:void 0)try{return n.setData("html",r()),e.preventDefaul(t)}catch(a){return i=a,T.error(i)}
+
+* 删除文本节点：$('#overlay').contents().filter(function(){return this.nodeType == 3;}).remove();
+* new RegExp(string, 'g');全局匹配的正则
+* iframe外部读取其body高度不准确的问题：iframe.style.height = auto 之后，再去读body的scrollHeight才准确。
+* IOS iframe高宽度问题 ------ 包括iphone/ipad/ipod中, iframe高度和宽度总是适应其里面的内容大小, 造成在portal页面文档不能滚动. 解决办法是判定当是ios时, 让iframe父元素滚动:
+	portal.js 375: if(gg.detectMobile.iOS()) $(".pt-iframe").css({'overflow-y': 'scroll'});
+	
+	
+* webpack-dev-server webpack开发服务器
+* chrome 开发工具有getEventListeners函数，可以查看某元素上的事件
+* bind call apply: http://web.jobbole.com/83642/
+* js 原型链：http://www.zhihu.com/question/34183746
+* js generator\async\await    http://www.ruanyifeng.com/blog/2015/05/async.html
+* lodash _.toFinite 可用来将字符串转成数字
+* _.get 可以取安全的取对象属性，可以指定默认值
+* style.sheet.addRule可以添加css规则, 添加后在style标签里是看不到的, style.sheet.cssRules里有
+* Done is better than perfect

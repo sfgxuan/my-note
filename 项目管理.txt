@@ -1,0 +1,9 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2015-11-03T10:52:35+08:00
+
+====== 项目管理 ======
+Created 星期二 03 十一月 2015
+
+* bug管理工具 ---- easybug， 在线免费
+* jira --- 项目管理系统， 要自己部署服务器

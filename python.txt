@@ -1,0 +1,58 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2015-07-29T11:47:18+08:00
+
+====== python ======
+Created 星期三 29 七月 2015
+
+* 使用cookie请求requests.get(url, cookies=cookies)
+* 多版本安装：
+	http://www.tuicool.com/articles/EnE7nm6
+	
+* python2.7 -m SimpleHTTPServer 8000 
+
+* sqlalchemy group by order by
+	count = func.count('*').label('cnt') 
+	query(Tbl.host, count).group_by(Tbl.host).order_by(count.desc()) 
+	or 
+	query(Tbl.host, func.count('*').label('cnt').group_by(Tbl.host).order_by(desc('cnt')) 
+	
+* sqlalchemy join: outerjoin = left outer join
+	g.session.query(func.count(distinct(BandwidthPlan.user_id)).label('room_count'), UserInfo.room_number)\
+				 .outerjoin(UserInfo, UserInfo.user_id == BandwidthPlan.user_id and UserInfo.site_id == BandwidthPlan.site_id)\
+				 .filter(UserInfo.site_id == site_id)\
+				 .filter(BandwidthPlan.start_time <= date)\
+				 .filter(BandwidthPlan.expire_time >= date)\
+				 .group_by(UserInfo.room_number)\
+				 .all()
+	
+* sqlalchemy 排序问题：自定义字段与数据库原有字段写法不同
+	order_criterion = eval("UserAP.%s.%s()" % (order_field, order_direction)) \
+			if order_field not in ('update_cnt', 'user_cnt') else eval("""%s("%s")""" % (order_direction, order_field))
+	
+* pip install package==2.0.0
+* pip install --upgrade pip 更新pip
+* gunicorn uwsgi是http server,负责解析http协议然后通过wsgi协议与后端应用通信获得返回值
+* sys.setrecursionlimit(1500) 设置递归深度
+* 安装pip: http://sharadchhetri.com/2014/05/30/install-pip-centos-rhel-ubuntu-debian/
+* 安装mysql-python:
+	sudo yum install mysql-devel
+	sudo pip install mysql-python
+
+* gunicorn 选项：
+	--access-logfile - 表示access log 到控制台
+	--log-file=- 表示gunicorn自身的log打到控制台
+
+* pip install -r require.txt 因某个包错误而中断的问题: cat requirements.txt | while read PACKAGE; do pip install "$PACKAGE"; done
+* python requests.post: 当指定content-type是application/json时, 需使用data=json.dumps(obj)给出参数
+* 字符转ASCII: ord('a')
+* python 将具有\u格式的ascii文件转成正常的string: s=f.read().decode('unicode-escape') 相反地，s.encode('unicode-escape')
+* 打印具有unicode escape的ascii文件：echo -en "\u的字符串" 或者 print "\u字符串"
+* sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)  重新打开stdout, 不使用buffer, 使用输出重定向时可以无延迟
+* python3 print函数输出时要指定张编码, 不然其会将字符编码成shell当前的默认编码或者ascii(重定向到文件时), 如果中文被强制编码成ascii, 会报错
+	通过PYTHONIOENCODING='utf-8'可以指定python默认编码, 类似于python2的sys.setdefaultencoding('utf-8')
+	
+* pyenv是用来管理多个版本python的，virtualenv是管理不同的python环境。现在版本的pyenv有pyenv-virtualenv插件，可以不用virtualenv
+* os.urandom(24) 可以产生真正的随机串
+* flask: EXPLAIN_TEMPLATE_LOADING 可以让flask显示render template的过程
+

@@ -1,0 +1,16 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2016-10-19T15:11:16+08:00
+
+====== vue ======
+Created 星期三 19 十月 2016
+
+* vue 模板单次插件更新：<span>This will never change: {{* msg }}</span>
+* vue 计算属性
+* v-if v-for在编译过程中始终拥有最高优先级
+
+===== vue 2.0 =====
+
+* v-on 一般只监听自定义事件，原生事件需要v-on:click.native  .native修饰符
+* v-once 插值只执行一次
+* element-ui可以定义表头: render-header方法

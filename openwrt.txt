@@ -1,0 +1,10 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2015-10-29T14:47:36+08:00
+
+====== openwrt ======
+Created 星期四 29 十月 2015
+
+* 192.168.1.0/24 dev eth5  proto kernel  scope link  src 192.168.1.10
+	配置ip route: ip route add proto kernel scope line 192.168.1.0/24 via 192.168.1.10 dev eth5
+* e2fsck [[/dev/sda2]] 貌似可以修复硬盘错误

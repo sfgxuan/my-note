@@ -1,0 +1,16 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2016-02-19T18:16:07+08:00
+
+====== wifibao ======
+Created 星期五 19 二月 2016
+
+* 上传新版本app: 下载链接指向短网址服务，实际网址指向147, 147负载均衡到121.40.140.78
+	apk存放路径：/home/wifibao/build_bot/apks/FactoryWiFi/release
+	将新apk放到这，然后短网址服务的实际网址指向改成新的文件名即可
+* pip install pil-compat 
+* groundpay pyDes模块安装方法：
+	wget http://twhiteman.netfirms.com/pyDES/pyDes-2.0.1.tar.gz 
+	tar xf [[http://twhiteman.netfirms.com/pyDES/pyDes-2.0.1.tar.gz|pyDes-2.0.1.tar.gz]] 
+	python setup.py install
+

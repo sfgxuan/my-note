@@ -1,0 +1,23 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2015-07-29T11:21:49+08:00
+
+====== js ======
+Created 星期三 29 七月 2015
+
+* Object.getOwnPropertyNames(window).length 可以得到某个对象的属性个数
+* array.slice 返回的是副本，而不是引用，可用于复制数组
+* 数组求和：eval(a.join("+"))
+* Number.isNaN(v) 与 isNaN(v)的区别：后者会先自动将v转换成Number(v)再进行判断，大概是Number.isNaN(v) == isNaN(Number(v))
+* String.fromCharCode(65) == 'A'
+* new Array(10).join('x') = 'xxxxxxxxxx'
+* unshift在 array前面加元素，shift去掉array前面的元素
+* 这里插一句，js 中 new 的作用，以 new a() 为例，过程相当于：
+	创建一个空对象 obj
+	把 obj 绑定到 a 函数的上下文当中（即 a 中的 this 现在指向 obj ）
+	执行 a 函数
+	返回 obj
+* console.log(JSON.stringify(json, null, 2)) // 2缩进量， prettify json output
+* a=function(a,b,c){}; a.length = 参数个数
+* Array.apply(null, Array(total_height)).map(Number.prototype.valueOf, 0) 可以创建以0填充的长度为total_height的数组, ES6可以用Array(total_height).fill(0), 也可以用lodash的_.fill
+* plain object === create by {} or new Object()

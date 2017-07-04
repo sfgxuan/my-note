@@ -1,0 +1,27 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2016-02-22T10:39:47+08:00
+
+====== 日常使用 ======
+Created 星期一 22 二月 2016
+
+* 无法连接到rdp服务器： 删除.freerdp/known_hosts
+* pycharm 长行换行显示设置：settings>code style>general>soft wraps
+* ubuntu终端tab颜色：
+	1. Create the file ~/.config/gtk-3.0/gtk.css
+	2. Paste this as the contents using your desired color:
+TerminalWindow .notebook tab:active {
+	background-color: #def;
+}3. Close all Terminal windows and relaunch the application to see the change.
+
+
+* chrome在ubuntu下地址栏输入很卡的问题：系统字体不要使用中文字体
+
+* webstorm：
+	1. 自带jdk: [[/Applications/WebStorm.app/Contents/jre/jdk/Contents/Home/jre/bin]]
+	2. [[/Applications/WebStorm.app/Contents/bin/webstorm.vmoptions]] 更改jvm内存设置等 （有说法：拷贝到~/.WebStorm10, 编辑其内容可以更改jvm内存设置等,。不能直接编辑程序目录下的文件，会影响license验证）
+
+* pycharm 回车自动添加反大括号的问题：editor -> general -> smart keys  -> enter
+* chrome://components : adobe flash 设置
+* chrome://net-internals/#hsts 可删除http总是自动转到https的问题
+* webstorm 移动html标签头尾alt+cmd+]/[

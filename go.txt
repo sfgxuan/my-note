@@ -1,0 +1,28 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2016-01-13T21:45:36+08:00
+
+====== go ======
+Created 星期三 13 一月 2016
+* 命名导入的模块
+	import (
+		
+		myutils "code.yimian.com.cn/usersession/utils"
+	)
+
+* go env
+	GOARCH="amd64"
+	GOBIN="/usr/local/go1.4/bin"
+	GOCHAR="6"
+	GOEXE=""
+	GOHOSTARCH="amd64" //目标机架构
+	GOHOSTOS="linux" //目标机系统
+	GOOS="linux"
+	GOPATH="/home/leon/golib:/home/leon/workspace/go_sfg/"
+	GORACE=""
+	GOROOT="/usr/local/go1.4"
+	GOTOOLDIR="/usr/local/go1.4/pkg/tool/linux_amd64"
+	CC="gcc"
+	GOGCCFLAGS="-fPIC -m64 -pthread -fmessage-length=0"
+	CXX="g++"
+	CGO_ENABLED="1"

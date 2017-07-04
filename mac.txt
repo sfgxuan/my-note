@@ -1,0 +1,22 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2016-06-22T11:56:14+08:00
+
+====== mac ======
+Created 星期三 22 六月 2016
+
+* mac osx 默认字体： Helvetica， 字体位置/System/Library/Fonts; [[/Library/Fonts]]; [[~/Library/fonts]];
+* 显示路由表: netstat -r
+* sysctl -a hw 查看硬件信息
+* 显示进程的线程：ps -M  -p 7891
+* kextload: 加载内核模块
+* usb 转网口重加载驱动：
+	sudo kextunload -b com.asix.driver.ax88179_178a
+	sudo kextload -b com.asix.driver.ax88179_178a
+	kextstat |grep asix
+
+* sudo lsof -i -n -P | grep TCP 显示进程端口
+* dscl directory service command line utility — mac没有/etc/passwd等，用户相关设计需要通过dscl设置
+* chsh - 更改用户默认shell
+* 没有fdisk -l; 用diskutil list代替
+* mac启动项设置: launchctl, homebrew也有类似功能：https://gist.github.com/subfuzion/9630872.  配置文件在~/library/launchAgents  &  [[/Library/launchDaimons(root]] 权限): http://www.launchd.info/

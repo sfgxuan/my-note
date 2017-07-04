@@ -1,0 +1,30 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2015-07-30T18:30:30+08:00
+
+====== phantomjs ======
+Created 星期四 30 七月 2015
+
+==== CentOS 6 安装phantomjs ====
+
+https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.8-linux-i686.tar.bz2 这个包貌似可以直接用
+1. sudo yum -y install gcc gcc-c++ make flex bison gperf ruby \
+  openssl-devel freetype-devel fontconfig-devel libicu-devel sqlite-devel \
+  libpng-devel libjpeg-devel
+
+2. git clone git://github.com/ariya/phantomjs.git
+cd phantomjs
+git checkout 2.0
+[[./build.sh]] --jobs 8  //运行时请从干净的源码开始，已运行过build的可能会有问题
+
+3. ubuntu : apt-get install phantomjs
+
+==== 其它 ====
+* http://phantomjs.org/related-projects.html
+* node-webshot 可以返回文件流
+* phantomjs 输出pdf 使用@media print 的style, 输出png使用@media screen的style 
+* phantomjs 输出pdf使用@media screen的方法（修改源代码重新编译）：https://github.com/jakgra/website-pdf-snapshot-taker
+
+==== phantomjs-node 不支持cluster多进程，如使用pm2会引起pm2崩溃 ====
+
+==== phantomjs 2.0 貌似不支持Number.isNaN(),使用该函数时无法snapshot ====

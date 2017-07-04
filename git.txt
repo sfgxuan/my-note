@@ -1,0 +1,85 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2015-10-06T17:20:01+08:00
+
+====== git ======
+Created 星期二 06 十月 2015
+
+* git rm --cached [filenames]  停止跟踪某些文件，从repo中删除，但本地还在
+* git fetch -p 可以远程已删除而本地未删除的分支
+* git 查看某次pull的改动
+	See all of the changes: git diff master@{1} master
+	
+	See the changes to a given file: git diff master@{1} master <file>
+	
+	See all the changes within a given directory: git diff master@{1} master <dir>
+	
+	See the summary of changes again: git diff --stat master@{1} master
+* git push origin [tagname] 推送tag; git push --delete origin [tagname]可删除远端tag
+* git merge --no-ff 保留commit历史，如果不使用--no-ff，被merge分支删除后就没有commit历史了
+* git merge --squash 使用squash方式合并，把多次分支commit历史压缩为一次
+* git reset --hard commit  vs   git revert commit, git push -f 可以把版本回退强行推上去
+* git log filename查看该文件的提交; git log -p filename查看该文件每次提交的详细改动, git log -p -m 或者 git log -p -c 可以看到merge时候的改动
+* git log --graph 图形化log
+* git diff/log:
+	--stat: 加减多少行
+	--summary: 删改文件列表
+* 查看某次提交的改动
+	git show revision
+	
+* git 全局设置
+	git config -l
+	git config user.name xdfasdf
+	git config user.email askdfjlaj.ksadf.sd
+
+* .gitconfig
+	[user]
+		name = yimian_sufagang
+		email = sufagang@yimian.com.cn
+	[core]
+		excludesfile = /home/leon/.gitignore_global
+		editor = vim
+	[color]
+		ui = true
+	[diff]
+		tool = vimdiff
+	[difftool]
+		prompt = False
+	[push]
+		default = simple
+		
+		
+* git patch:
+	git diff xxxcommit > patch
+	git apply patch ----- git apply --check xx.patch
+	或者：git format-patch
+	
+* git clean -df 可以删除未tracked的file
+* git clean -f -n 可以查看将要被删除的file
+* git diff commit file 查看某次commit某个文件和当前版本的差异
+* githup上按语言查看星星最多的https://github.com/search?l=JavaScript&p=5&q=stars%3A%3E1&s=stars&type=Repositories
+* git status --ignored 显示被ignore的文件
+* undo git reset: git reset HEAD@{1}
+* git log -p -w somefile  -w 选项可以无视空格缩进类改动， git diff -w 也一样
+
+* 删除远程分支：
+	git branch -r -d origin/branch-name
+	不成功，发现只是删除的本地对该远程分支的track，正确的方法应该是这样：
+	git push origin :branch-name
+	冒号前面的空格不能少，原理是把一个空分支push到server上，相当于删除该分支, 同样的，删除tag也可以类似这样操作。
+
+
+## git 教程：http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/0013758410364457b9e3d821f4244beb0fd69c61a185ae0000
+
+* git 检出自动换行尾的问题： git config --global core.autocrlf input | true | false
+* git pull = git fetch + git merge FETCH_HEAD
+* git remote add upstream https://github.com/troolee/gridstack.js.git
+* git branch -m oldname newname 可以重命名本地分支名
+* git 使用代理：git -c "http.proxy=socks5://127.0.0.1:1080" clone https://yimian_sufagang@bitbucket.org/yimian/scene_gui.git
+* git reset 之后可以git push -f 强推到远程仓库
+* git merge 冲突时如果想留某一边文件: git checkout --theirs -- <dir>|<file>
+* git remote prune origin 可以删除本地中远端没有的分支
+* git merge-base -a branch1 branch2 找到两个提交点的公共祖先
+* git diff somecommit — . ':!somedir' 可忽略某个目录
+
+

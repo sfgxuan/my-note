@@ -1,0 +1,9 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2015-08-10T16:11:55+08:00
+
+====== summernote ======
+Created 星期一 10 八月 2015
+
+* summernote destroy 后，元素绑定的click响应函数也没有了
+* summernote toolbar是的响应函数是绑定在document上的

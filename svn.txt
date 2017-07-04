@@ -1,0 +1,12 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2015-10-06T17:28:51+08:00
+
+====== svn ======
+Created 星期二 06 十月 2015
+
+* 192.168.1.201启动svn: svnserve -d -r [[/home/sufagang/svn/factorywifi]]
+	-d : daemon
+	-r : 服务目录，目录权限sufagang账户
+
+* svn add -force /path/to/file

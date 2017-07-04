@@ -1,0 +1,8 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2015-08-13T18:28:41+08:00
+
+====== bootstrap ======
+Created 星期四 13 八月 2015
+
+* modal的'shown.bs.modal'事件不触发问题：Remove class "fade" from modal container. Seems modal() does not fire shown.bs.modal event after animation

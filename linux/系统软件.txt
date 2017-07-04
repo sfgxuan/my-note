@@ -1,0 +1,31 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2015-07-30T11:54:50+08:00
+
+====== 系统软件 ======
+Created 星期四 30 七月 2015
+
+* oh-my-zsh zsh管理设置软件
+* 安装完zsh后，可以设置theme(https://github.com/robbyrussell/oh-my-zsh/wiki/themes)
+* centos 6 安装crontab
+	yum install vixie-cron
+	yum install cronie
+	service crond start
+	chkconfig crond on
+
+
+* sudo tcpdump host 113.91.174.3 and port 8001 -s 1024 -n -v -i em1:2
+	-i: 接口
+	-s: 抓取包头长度
+	-nn: 数字显示
+	-v: verbose
+	-X: 打印头部信息
+	-XX: 打印头信息包括链路层信息
+	-x: 打印头部及数据
+	-xx: 打印头部及数据包括链路层信息
+* tcpdump -D 查看可用-i 值
+* rsync 文件同步
+* tar xJf xxx.xz   J选项专门处理xz文件
+* yum list installed/包名 查看
+* rpm -ql 库名 列出库文件位置
+* lsb_release可以查看系统发行信息，linux standard base
