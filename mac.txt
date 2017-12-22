@@ -16,7 +16,24 @@ Created 星期三 22 六月 2016
 	kextstat |grep asix
 
 * sudo lsof -i -n -P | grep TCP 显示进程端口
-* dscl directory service command line utility — mac没有/etc/passwd等，用户相关设计需要通过dscl设置
+* dscl directory service command line utility — mac没有/etc/passwd等，用户相关设计需要通过dscl设置。进到dscl prompt后，可使用cd read cat等命令来查看信息
 * chsh - 更改用户默认shell
 * 没有fdisk -l; 用diskutil list代替
 * mac启动项设置: launchctl, homebrew也有类似功能：https://gist.github.com/subfuzion/9630872.  配置文件在~/library/launchAgents  &  [[/Library/launchDaimons(root]] 权限): http://www.launchd.info/
+* 查看文件系统类型：diskutils info mountPoint
+* brew services list 查看brew的service状态
+* 查看一个binary链接的动态库：otool -L [[/path/to/binary,]] 在linux上是: ldd [[/path/to/binary]]
+* dd if=./CentOS-7-x86_64-Minimal-1511.iso of=/dev/disk2 bs=10m 时提示Resource busy, 要用diskutil unmount先把该盘中已挂载的分区卸载掉
+* pbcopy pbpaste
+* AppleScript Editor
+* dock时间设置：
+	defaults write com.apple.dock autohide-delay -int 0
+	defaults write com.apple.dock autohide-time-modifier -float 0.4
+	killall Dock
+	恢复：
+	defaults delete com.apple.dock autohide-delay
+	defaults delete com.apple.dock autohide-time-modifier
+	killall Dock
+
+* mac上使用tar压缩文件时，在非mac系统上解压为多出以._打头的隐藏文件，使用如下命令压缩可以去掉这些隐藏文件：
+	COPYFILE_DISABLE=1 tar zcf oface.tar.gz oface

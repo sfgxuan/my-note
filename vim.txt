@@ -81,6 +81,7 @@ zN 全部折叠
 	  S    指定按名字排序的后缀优先级 |netrw-S|
 	  t    在新标签页里打开光标所在的文件/目录 |netrw-t|
 	  v    打开新浏览窗口，进入光标所在的目录。使用垂直分割。|netrw-v|
+	CTRL-^ (and/or CTRL-6 ?) This results in the file open in one buffer and the file browser open at the directory you started in
 	
 * 多窗口操作：
 	http://blog.chinaunix.net/uid-24673811-id-1994607.html
@@ -97,4 +98,6 @@ set expandtab
 * [[:args]] 可以显示当前打开的文件, [[:ls]] 也可以
 * set hidden 可以不需要保存就切换不同buffer
 * vim 改变大小写: ~大小写切换, u变小写, U变大写
+* vim打开文件夹，点击enter进入某文件后，可以ctrl+6返回文件夹
+* :E directory打开文件夹
 

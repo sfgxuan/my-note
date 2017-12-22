@@ -47,4 +47,10 @@ Created 星期三 14 十月 2015
 * db.user.update({email: /^.+@58.com$/}, {$set: {type: 30}}, {multi: true}) 默认只更新一条，加multi: true才会更新全部
 * mongo 3.2版本不再有system.indexes表，只能使用db.collection.getIndexes()查看索引
 * db.document.createIndex({user:1}, {sparse:true}) 创建index, sparse表示没有该字段的文档不创建index
+* 在某db上create role: db.createRole({role: 'buydeem', privileges:[{resource: {db: 'singleview', collection: 'orders'}, actions: ['find']}], roles: []})
+* create user: db.createUser({user: 'buydeem', pwd: 'Buydeem123', roles: [{db: 'singleview', role: 'buydeem'}]})
+* 显示某role: db.getRoles({showPrivileges: true})
+* 添加privileges到role: db.grantPrivilegesToRole('buydeem', [{resource: {db: 'singleview', collection: 'orders_tb'}, actions: ['find'], roles: []}])
+* 查看某role: db.getRole('buydeem', {showPrivileges: true})
+* mongo shell: find().toArray() 可得到find返回的数组
 	

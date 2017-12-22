@@ -1,0 +1,88 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2017-09-26T20:51:22+08:00
+
+====== tableau ======
+Created 星期二 26 九月 2017
+
+* tableau https 坑：
+	1. 如果配置了让 HTTP 的请求全部 redirect 到 HTTPS，需要让客户端把 Tableau Server 的地址从 HTTP 改为 HTTPS，否则某些 POST 请求被 redirect 之后会变成 GET，从而导致 405，无法发布 workbook.
+	2. 上传数据时，会出现进度条不动的现象，需要调整 Nginx 的配置，上调 `client_max_body_size`. `client_max_body_size` 默认是 1m, POST 更大的数据时会出现 413. 可以配置为 `client_max_body_size 2048m;`.
+
+* tableau custom sql问题：
+	@所有人 tableau 使用custom sql时会有这么个问题：http://kb.tableau.com/articles/issue/errors-tableauexception-or-could-not-find-sheet-with-name-sheet-0-when-publishing-a-workbook-to-tableau-server-or-and-tableau-online
+	即做好后上传到server 打开时老报错，有这问题的desktop 版本 10.2.4 以下、10.3.2以下、10.4
+	
+* tableau迁移：
+	## 启动 EC2 实例
+	
+	先根据 Tableau Server 的使用情况确定需要的配置，从而确定实例类型。
+	
+	- AMI: Microsoft Windows Server 2012 R2 Base（简体中文）
+	- 类型: m4.4xlarge
+	
+	启动、配置步骤略去不表，有两点需要注意：
+	
+	- VPC 需要开启 3389 端口用于远程登录（RDP）
+	- 密钥对会用于解密登录密码
+	
+	## 安装 Tableau Server
+	
+	从 Tableau 官网下载然后安装，配置、激活略去不表。
+	
+	## 安装 MySQL 驱动
+	
+	在 [这个页面](https://www.tableau.com/zh-cn/support/drivers)%E5%8F%AF%E4%BB%A5%E6%89%BE%E5%88%B0%E6%89%80%E6%9C%89%E6%95%B0%E6%8D%AE%E6%BA%90%E9%9C%80%E8%A6%81%E7%9A%84%E9%A9%B1%E5%8A%A8%E7%A8%8B%E5%BA%8F.
+	
+	下载好驱动程序，如 mysql-connector-odbc-5.3.7-winx64.msi，双击安装，提示错误。搜索了一番，应该是缺少 Visual C++ 的运行库。试过 Visual C++ Redistributable for Visual Studio 2012 Update 4 和 Visual C++ Redistributable Packages for Visual Studio 2013，最后发现后者才有用。
+	
+	安装完 [Visual C++ Redistributable Packages for Visual Studio 2013](https://www.microsoft.com/zh-cn/download/confirmation.aspx?id=40784) 之后，可以成功安装mysql-connector-odbc-5.3.7-winx64.msi 。
+	
+	## 安装 AWS 命令行程序
+	
+	从这里下载：[https://s3.amazonaws.com/aws-cli/AWSCLI64.msi](https://s3.amazonaws.com/aws-cli/AWSCLI64.msi)
+	
+	安装完后打开 cmd，运行 `aws configure` 进行配置，要有上传 S3 的权限。完成后可以运行 `aws s3 ls` 验证。
+	
+	## 编写备份脚本
+	
+	自动备份并且把备份文件上传到 S3。
+	
+	@echo OFF
+	set Binpath="C:\Program Files\Tableau\Tableau Server\10.2\bin"
+	set Backuppath="C:\Backups\Tablea Server\nightly"
+	echo %date% %time%: *** Housekeeping started ***
+	
+	rmdir %Backuppath% /S /Q
+	
+	%Binpath%\tabadmin backup %Backuppath%\ts_backup -d --no-config
+	timeout 5
+	
+	%Binpath%\tabadmin cleanup
+	
+	echo %date% %time%: Uploading to S3
+	
+	aws s3 cp %Backuppath% s3://marspet-tableau-backup/ --recursive --exclude "*" --include "ts_backup-*.tsbak"
+	
+	echo %date% %time%: *** Housekeeping completed ***
+	timeout 5
+	
+	## 从备份恢复
+	
+	如果是从其他的 Tableau Server 迁移过来，可以使用备份文件迁移数据。
+	
+	C:\Users\Administrator>"C:\Program Files\Tableau\Tableau Server\10.2\bin\tabadmi
+	n.bat" restore --no-config Downloads\ts_backup-2017-04-05.tsbak
+	
+	restore 操作会关闭 Tableau Server，恢复完成后需要手动开启。
+	
+	## 自动备份
+	
+	使用 Task Scheduler 实现，详情见官方文档：http://technet.microsoft.com/en-us/library/cc766428.aspx 
+	
+* tableau linux server:
+	按着官方文档安装即可
+	卸载时要手动删除/var/opt/tableau, [[/opt/tableau,]] [[/etc/opt/tableau]] 下面的文件，不然老提示检测到其它版本，安装失败
+	
+
+

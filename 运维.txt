@@ -52,4 +52,28 @@ Created 星期二 05 一月 2016
 	相关问题：http://ju.outofmemory.cn/entry/82191 "cpu 0000 cpu1"报错
 
 * dell iDRAC小系统: root calvin 默认
+* 当前cpu频率：cat [[/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq]]
+* sas速率12Gbps, sata速率6Gbps
+* disk benchmark:
+	cmd: fio -ioengine=libaio -bs=32k -direct=1 -thread -rw=randrw -percentage_random=100,0 -size=10G -filename=fio_randr_write_test.txt -name='PingCAP' -iodepth=4 -runtime=60
+		dd bs=4k count=250000 oflag=direct if=/dev/zero of=./dd_test.txt
+	my mac:
+		read: IOPS=3631, BW=113MiB/s (119MB/s)(5121MiB/45124msec)
+		write: IOPS=3629, BW=113MiB/s (119MB/s)(5119MiB/45124msec)
+	jcloud ssd:
+		read : io=2578.2MB, bw=43992KB/s, iops=1374, runt= 60013msec
+		write: io=2598.9MB, bw=44344KB/s, iops=1385, runt= 60013msec
+		dd: 6.0 MB/s
+	ym22 with raid5:
+		read : io=386784KB, bw=6444.1KB/s, iops=201, runt= 60014msec
+		write: io=388576KB, bw=6474.8KB/s, iops=202, runt= 60014msec
+		dd: 1.9 MB/秒
+	ym29 with raid0:
+		read : io=592832KB, bw=9879.6KB/s, iops=308, runt= 60009msec
+		write: io=595872KB, bw=9929.8KB/s, iops=310, runt= 60009msec
+		dd: 51.7 MB/s
+	ym87 with raid0, service running:
+		read : io=487200KB, bw=8118.2KB/s, iops=253, runt= 60014msec
+		write: io=488864KB, bw=8145.9KB/s, iops=254, runt= 60014msec
+		dd: 27.1 MB/s
 

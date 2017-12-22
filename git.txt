@@ -76,10 +76,20 @@ Created 星期二 06 十月 2015
 * git remote add upstream https://github.com/troolee/gridstack.js.git
 * git branch -m oldname newname 可以重命名本地分支名
 * git 使用代理：git -c "http.proxy=socks5://127.0.0.1:1080" clone https://yimian_sufagang@bitbucket.org/yimian/scene_gui.git
+* gitconfig中设置代理：
+	[http]
+		proxy = socks5[[://proxy:8080]]
+	[https]
+		proxy = socks5[[://proxy:8080]]
+	[url "https://"]
+		insteadOf = git://
+	
 * git reset 之后可以git push -f 强推到远程仓库
 * git merge 冲突时如果想留某一边文件: git checkout --theirs -- <dir>|<file>
 * git remote prune origin 可以删除本地中远端没有的分支
 * git merge-base -a branch1 branch2 找到两个提交点的公共祖先
 * git diff somecommit — . ':!somedir' 可忽略某个目录
+* git clone --depth 5 somerepso -b sometag
+* git submodule update --init --recursive
 
 

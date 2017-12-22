@@ -152,6 +152,9 @@ ADD INDEX `cdate` (`crawl_date` ASC);
 * information_schema.INNODB_TRX 里面是innodb正在跑的transaction, 有时候show processlist某个进程已经sleep, 但其 transaction还在跑, 这时候需要再kill 已经sleep的进程
 * 显示当前登录用户: select user();
 * 存储过程: grant create on procedure *.* to datamaster@'10.8.0.%' identified by 'datamaster';
+* 显示数据库字符集: show variables like "character_set_database";
+* 显示版本: SELECT VERSION();
+* utf8mb4 包含utf8, 可以支持emoji表情
 
 
 

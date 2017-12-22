@@ -79,3 +79,4 @@ Created 星期四 30 七月 2015
 * _.get 可以取安全的取对象属性，可以指定默认值
 * style.sheet.addRule可以添加css规则, 添加后在style标签里是看不到的, style.sheet.cssRules里有
 * Done is better than perfect
+* 可以设置document.domain来跨子域，注意只能跨子域

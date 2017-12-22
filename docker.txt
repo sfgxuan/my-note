@@ -11,13 +11,40 @@ Created 星期一 01 二月 2016
 * 把用户加到docker组，用户可以使用docker相关命令
 * docker使用简单步骤：
 	yum install -y docker-engine
-	serice docker start
+	service docker start
 	docker pull someIMAGE
 	docker run blabla
 	
 	
 * 启动mysql: docker run --name docker-mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=yimian -v /data/docker-mysql/:/var/lib/mysql -d mysql
-* 启动owncloud: docker run -d -p 5000:80 -v /data/owncloud:/var/www/html --link docker-mysql:mysql --name=owncloud owncloud.    访问页面后要先创建数据库再提交初始化信息，不然总报错
-* 连接到一个正在运行的container: docker exec -i -i containerNameOrId [[/bin/bash]]
+* 启动owncloud: docker run -d -p 5000:80 -v /data/owncloud:/var/www/html --link docker-mysql:mysql --name=owncloud owncloud.    访问页面后要先创建数据库再提交初始化信息，不然总报错. 如果需要改数据库链接，可以直接改config/config.php里面的
+* 连接到一个正在运行的container: docker exec -it containerNameOrId [[/bin/bash]]
+* docker run -idt --name sufagang-sslocal7 --rm -e SSLOCAL_HOST=sgp1.maxnets.win -p 10800:1080 ym-082:12345/sufagang-sslocal:1.0
 
 * 启动已存在的container: docker start container-name
+* 查看所有容器: docker ps -a
+* mac中修docker registry-mirror: 工具栏docker > Preferences > Daemon > Advanced, json中添加key-value: "registry-mirror": "http://aad0405c.m.daocloud.io"
+	在linux下：
+		修改Docker配置文件/etc/default/docker如下：DOCKER_OPTS="--registry-mirror=http://aad0405c.m.daocloud.io"
+* 查看image历史：docker history --no-trunc python:2.7
+* 使用内部registry:
+	1. docker daemon 配置：
+	 {
+	  "registry-mirror" : "http://63f5b8c4.m.daocloud.io",
+	  "insecure-registries" : [
+		"172.16.24.82:12345"
+	  ],
+	  "debug" : true,
+	  "experimental" : true
+	}
+	  
+	 2. docker build -t 172.16.24.82:12345/sufagang-sslocal:2.0 . 
+	 3. docker push 172.16.24.82:12345/sufagang-sslocal:2.0
+		  4.  在这里查看：
+				http://172.16.24.82:12345/v2/_catalog	 
+		   http://172.16.24.82:12345/v2/sufagang-sslocal/tags/list
+
+
+
+
+

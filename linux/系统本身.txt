@@ -52,3 +52,5 @@ Created 星期三 29 七月 2015
 
 * recovery mode修改root密码：1.修改grub内核启动选项ro recovery nomodeset ⇒ rw single init=/bin/bash, 2.ctrl + x进入root
 	http://www.linuxidc.com/Linux/2013-01/78558.htm
+	
+* 系统开机启动过程：BIOS开机自检——>MBR系统引导程序——>GRUB菜单——>加载系统内核(kernel)——>运行init进程——>执行/etc/rc.d/rc.sysinit脚本——>读取/etc/inittab配置文档——>/etc/rc3.d/*[加载系统启动服务]——> /etc/profile.d/* [加载系统相关内置环境脚本] ——>最后启动mingetty进程——>进入系统登录界面

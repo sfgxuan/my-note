@@ -47,6 +47,11 @@ centos 网络配置：
 
 	最后service network restart
 	添加新IP地址后：ifup device 名称
+	添加机器重启后或者网络重启后还在的静态路由：
+		touch [[/etc/sysconfig/network-scripts/route-em1]]
+		echo "10.8.0.0/24 via 172.16.24.9" >> route-em1
+		这个route-em1文件为被ifup-route脚本引用
+		好像在ifcfg-em1里面加`10.8.0.0/24 via 172.16.24.9`这条也可以，没有试过
 
 	
 查看某程序端口号netstat -anp|grep ssh

@@ -7,3 +7,16 @@ Created 星期三 06 四月 2016
 
 * ca = certifaicate authority 第三方证书颁发机构
 * .crt  .cer    https证书, 就是经过ca签名的公钥
+
+* 查看ssh公钥的fingerprint: ssh-keygen -lv -E md5 -f ssh_host_ecdsa_key.pub
+
+* letsencrypt 在将网站迁移需要合并/etc/letsencrypt文件夹, 具体如下：
+	renewal - conf文件里面的.well-known路径需要重新设置
+	live - 软链接
+	archive - 复制过来即可
+	accounts - 其下directory下的文件夹要复制
+	csr, keys - 这两个文件夹可以不复制
+	
+* letsencrypt要读取域名的CAA信息：https://dns.google.com/query?name=www.dataone.ai&type=CAA&dnssec=true
+	
+

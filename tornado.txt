@@ -1,0 +1,9 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2017-10-12T14:40:20+08:00
+
+====== tornado ======
+Created 星期四 12 十月 2017
+
+* Sometimes you may want to “fire and forget” a coroutine without waiting for its result. In this case it is recommended to use IOLoop.spawn_callback
+* The simplest way to call a blocking function from a coroutine is to use a ThreadPoolExecutor

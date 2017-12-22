@@ -46,7 +46,7 @@ Created 星期四 30 七月 2015
 * sudo mii-tool -V em1 查看网卡link信息            ethtool也可以用
 * cat /proc/sys/kernel/threads-max 查看最大线程数
 * cat [[/proc/sys/net/ipv4/ip_local_port_range]] 查看商品范围
-* ps axms 查看线程信息，ps axms | wc - l 查看线程数
+* ps axms 查看线程信息: 进程后面显示线程信息，ps axms | wc - l 查看线程数(多统计一次主进程), 正确的统计：ps -eT | wc -l;  ps -eLf | wc -l
 * nproc = maximum number of processes 与cpu核心数一致
 * ps -L -u search | wc -l 查看用户进程数
 * ulimit -u 用户进程数限制
@@ -56,7 +56,7 @@ Created 星期四 30 七月 2015
 * sudoers 不用密码：yk ALL=(ALL) NOPASSWD: ALL
 * .profile login shell是不读取的
 * cd 用户名可以直接进入用户的家目录，用户家目录可以在/etc/passwd下面定义，不一定是/home/user
-* 批量替换文件中的字符串： sed -i "" "s/www.admin99.net/admin99.net/g" `grep www.admin99.net -rl [[/home`]]
+* 批量替换文件中的字符串： sed -i"" "s/www.admin99.net/admin99.net/g" `grep www.admin99.net -rl [[/home`]]
 	-r recursive   -l 打印匹配的文件名
 * iconv/uconv 可以转换文件编码, uconv 可以给文件加bom
 * (printf "\357\273\277";cat utf.csv) > utf1.csv 也可以给文件加bom
@@ -68,9 +68,9 @@ Created 星期四 30 七月 2015
 * [[/etc/environment]] 设置系统的环境变量; [[/etc/profile]] 设置所有用户的环境变量
 * 文件头#! [[/usr/bin/env]] python, 当python路径不对时,可以用这种写法, 不需要再care python安哪去了
 * ping 192.168.1.1 | while read pong; do echo "$(date): $pong"; done             -------------            ping时显示时间
-* find . -type l          ---------------              查找当前目录下所有符号链接
+* find . -type l          ---------------              查找当前目录下所有符号
 * rsync -P --rsh=ssh home.tar 192.168.0.34:/home/home.tar 传输文件：-P 表示显示过程；--rsh表示使用ssh传输
-* 查看网口建链速度：cat [[/sys/class/net/em1/speed]]
+* 查看网口建链速度：cat [[/sys/class/net/em1/speed；]] ethtool em1;
 * 查看cpu频率：cat [[/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq]]
 * cpu实时频率查看:
 	1. yum install -y cpufrequtils
@@ -122,3 +122,56 @@ Created 星期四 30 七月 2015
 * 查看inotify watch 数量:  lsof | grep inotify | wc -l
 * su username -c "command" 可以以某user运行某命令
 * id -u root 可以查看某user ID, id -g group 可以查看某group ID
+* su -s [[/bin/bash]] 可以登入到/sbin/nologin user
+* 检查当前user： id -u 返回当前userId
+* 去掉一些系统服务的PS: ps axu | grep -v 'migration\|ksoftirqd\|watchdog\|events\|kintegrityd\|kblockd\|ata_sff\|md\/\|md_misc\|aio\/\|crypto\/\|kthrotld\/'          ps axu | grep -v '\[.*\]' |less
+* 使用ssh agent forwarding时，依赖环境变量$SSH_AUTH_SOCK的存在，该变量只存在于刚连接进去的shell，如果使用sudo或者screen，该变量将不存在，因而也不能使用forward。sudo 可以使用-E选项保持当前环境变量
+* iterm的imgcat: https://raw.githubusercontent.com/gnachman/iTerm2/master/tests/imgcat
+* 查看分区信息：cat [[/proc/partitions]]
+* 查看机器串号：dmidecode -s system-serial-number
+* 查看文件inode信息：stat /          stat [[/proc/1/exe]]
+* 查看cpu温度：lm_sensors
+* 命令行编辑：
+	可以使用vi模式：set -o vi
+	快捷键：
+		C-b Move back one character.
+		C-f Move forward one character.
+		[DEL] or [Backspace] Delete the character to the left of the cursor.
+		C-d Delete the character underneath the cursor.
+		C-_ or C-x C-u Undo the last editing command. You can undo all the way back to an empty line.
+
+
+
+
+* find . -name '*.jpg' | xargs --delimiter='\n' imgcat
+* 找到分区的UUID: blkid, 分区uuid其实是软链接在/dev/disk
+* fstab与mtab:
+	/etc/fstab is list of filesystems to be mounted at boot time. If you want your Windows or file-storage partition mounted once your computer boots , you put appropriate entry into /etc/fstab.
+	/etc/mtab is list of currently mounted filesystems. If you have a disk connected but not mounted, it won't show up in the /etc/mtab file. Once you mount it, it will show up there.
+
+* PROMPT_COMMAND: 环境变量，在每次显示命令行提示符前执行，pyenv在bash环境依赖该变量做auto activate; 在zsh环境好像是precmd_functions   preexec_functions这类hook functions
+* reload fstab: mount -a
+* 找到组的用户: /etc/groups文件里找组名
+* 找到用户的组: groups username
+* 添加已有用户到已有组：usermod -a -G docker ymweb
+* [[/etc/ssh/ssh_config:]] SendEnv 会把当前系统的env变量传到远端，影响服务器的环境变量
+* bindkey 可以显示或者设置命令行快捷键
+* 找文件中有没有某串：sudo grep -Rn yujia `sudo find /home -name authorized_keys`
+* dig: dns解析工具
+	查看tld(top level domain)的服务器：dig ns com, tld server返回的是某个二级域名应该找哪个server去要实际的解析
+
+* 删除某个IP: ip addr del 60.12.226.42/28 dev em1:0
+* badblocks: 检测硬盘坏道
+* fsck e2fsck: 检测并修复硬盘坏道: fsck.ext4 -vcDfty -C 0 [[/dev/sdb1:]]  fsck.ext4 -c -c -f /dev/sdb1 
+* 时间：2017-10-24T00:00+0800 表示东8区当前时间是2017-10-24 00:00:00
+* dumpe2fs: prints the super block and blocks group information for the filesystem present on device； dumpe2fs -b: print the blocks which are reserved as bad in the filesystem
+* vsftpd: very secure ftp daemon
+* fuser somefile: 可以找到使用该资源的用户
+* screen内粘贴一条命令并执行：screen -r sfg -X stuff "shell command here\n"
+* postfix: linux邮件服务器
+* df -i: 可以查看可用inode数
+* 查看硬盘是否是ssd:
+	cat [[/sys/block/sda/queue/rotational]]  0 表示是
+	lsblk -d -o name,rota
+	cat /proc/scsi/scsi
+

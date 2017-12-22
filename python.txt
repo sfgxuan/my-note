@@ -55,4 +55,18 @@ Created 星期三 29 七月 2015
 * pyenv是用来管理多个版本python的，virtualenv是管理不同的python环境。现在版本的pyenv有pyenv-virtualenv插件，可以不用virtualenv
 * os.urandom(24) 可以产生真正的随机串
 * flask: EXPLAIN_TEMPLATE_LOADING 可以让flask显示render template的过程
+* ipython hot reload:
+	%load_ext autoreload
+	%autoreload 2
+
+* twisted, greenlet, eventlet, gevent, tornado, coroutine
+	twisted: is an event-driven networking engine written in python
+	greenlet: 底层，被eventlet和gevent使用
+	gevent: systems like gevent use lightweight threads to offer performance comparable to asynchronous systems, but they do not actually make things asynchronous
+			cooperative lightweight threads as seen in frameworks like gevent are sometimes called coroutines as well, but in Tornado all coroutines use explicit context switches and are called as asynchronous functions
+	tornado：有个万能的coroutine runner
+	
+	cooperative lightweight threads as seen in frameworks like gevent are sometimes called coroutines as well, but in Tornado all coroutines use explicit context switches and are called as asynchronous functions
+
+* 开FTP: sudo python -m pyftpdlib -w -u sfg -P sfg -p 21
 

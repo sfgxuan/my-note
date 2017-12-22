@@ -1,0 +1,12 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2017-11-21T18:57:03+08:00
+
+====== php ======
+Created 星期二 21 十一月 2017
+
+* Class 'DOMDocument' not found in
+	yum install php-xml
+* wordpress提示连不到mysql: 
+	yum install php-mysql
+	

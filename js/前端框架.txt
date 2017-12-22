@@ -6,3 +6,8 @@ Creation-Date: 2015-08-07T17:20:29+08:00
 Created 星期五 07 八月 2015
 
 * extJs 貌似很给力，有空可以研究下
+* 前端框架调研
+	vux移动端框架: weui + vue, weui是腾讯出的ui框架
+	quasar: 移动端和桌面端通用的一套基于vue2的框架，看起来很不错
+	vuetifyjs: 好像还可以
+

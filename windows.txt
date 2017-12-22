@@ -6,3 +6,15 @@ Creation-Date: 2015-10-22T11:15:48+08:00
 Created 星期四 22 十月 2015
 
 * sc delete 服务名          可删除一个服务
+* findstr 类似grep:
+	1、在当前目录及所有子目录下的所有文件中查找
+	在当前目录及所有子目录下的所有文件中查找"backup"这个字符串，*.*表示所有类型的文件。
+	findstr /s /i "backup" *.* 
+	
+	2、查找带有空格的字符串
+	在当前目录及所有子目录下查找"backup jobs"
+	findstr /s /i /c:"backup jobs" *.* 
+	
+	3、指定路径查找字符串"cmd"
+	在C:\tmp\查找所有txt文件的字符串"cmd"
+	findstr /s /i /c:"cmd" C:\tmp\*.txt

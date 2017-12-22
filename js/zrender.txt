@@ -1,0 +1,10 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2017-08-18T14:59:30+08:00
+
+====== zrender ======
+Created 星期五 18 八月 2017
+
+## zrender源码
+- 每个zr实例主要包括这几个对象：painter, storage, handler
+- 

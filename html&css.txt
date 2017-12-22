@@ -47,3 +47,11 @@ Created 星期六 08 八月 2015
 * css命名规范 - BEM
 * clear只当前面有float元素时有意义
 * css动画可以走折线，使用@keyframes这个属性控制路径点，PS: datapipeline.com
+* 解决ios上当div内部滚动时没有elastic bounce effect的效果：-webkit-overflow-scrolling: touch;
+* width: auto问题：
+	官网wordpress的logo在移动端，在点击logo链接刷新的情况下，logo出现错位。经查看是因为包含logo的a元素的width(auto)得到的是logo图像本身的大小，即css样式和实际渲染效果不一致，而点击浏览器刷新则没有这问题。
+	初步判断问题出在width auto的机制上，在开发工具下开关一下width就可以解决。
+	该问题最后通过在wordpress后台给logo一个高度来解决，应该是给logo高度时触发了渲染同步之类的
+	
+* &nbsp;在老版本的chrome(41)下，在中文字体下宽度显示是一个汉字的宽度，可用&ensp;(半角空格)来代替
+
