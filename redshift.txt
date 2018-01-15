@@ -1,0 +1,12 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-01-10T20:26:05+08:00
+
+====== redshift ======
+Created 星期三 10 一月 2018
+
+* select stl_query.query, trim(querytxt), STL_INSERT
+.rows, stl_query.starttime, stl_query.endtime as sqlquery
+from stl_query  left join STL_INSERT  on stl_query.query = STL_INSERT
+.query where querytxt like '%placement_export_keywords%' and stl_query.starttime > '2018-01-10 00:00:00' and stl_query.endtime < '2018-01-10 05:00:00'
+order by stl_query.query desc limit 100;

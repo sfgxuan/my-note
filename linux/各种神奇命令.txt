@@ -173,5 +173,6 @@ Created 星期四 30 七月 2015
 * 查看硬盘是否是ssd:
 	cat [[/sys/block/sda/queue/rotational]]  0 表示是
 	lsblk -d -o name,rota
-	cat /proc/scsi/scsi
+	cat [[/proc/scsi/scsi]]
+* 找到硬盘信息：udevadm info --query=all --name=/dev/sda
 
