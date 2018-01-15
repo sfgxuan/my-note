@@ -21,3 +21,4 @@ Created 星期三 29 七月 2015
 * a=function(a,b,c){}; a.length = 参数个数
 * Array.apply(null, Array(total_height)).map(Number.prototype.valueOf, 0) 可以创建以0填充的长度为total_height的数组, ES6可以用Array(total_height).fill(0), 也可以用lodash的_.fill
 * plain object === create by {} or new Object()
+
