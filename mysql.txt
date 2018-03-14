@@ -155,6 +155,7 @@ ADD INDEX `cdate` (`crawl_date` ASC);
 * 显示数据库字符集: show variables like "character_set_database";
 * 显示版本: SELECT VERSION();
 * utf8mb4 包含utf8, 可以支持emoji表情
+* mysql命令行乱码：set names utf8;
 
 
 

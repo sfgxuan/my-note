@@ -37,3 +37,7 @@ Created 星期三 22 六月 2016
 
 * mac上使用tar压缩文件时，在非mac系统上解压为多出以._打头的隐藏文件，使用如下命令压缩可以去掉这些隐藏文件：
 	COPYFILE_DISABLE=1 tar zcf oface.tar.gz oface
+	
+* 查看wifi ap bssid: [[/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airpor]] -s
+	sudo ln -s /System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport /usr/sbin/airport
+	

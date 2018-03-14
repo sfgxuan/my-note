@@ -84,5 +84,21 @@ Created 星期二 26 九月 2017
 	按着官方文档安装即可
 	卸载时要手动删除/var/opt/tableau, [[/opt/tableau,]] [[/etc/opt/tableau]] 下面的文件，不然老提示检测到其它版本，安装失败
 	
+	
+* tableau发布页面权限：在chrome任一隐身窗口登录到server后，另外的隐身窗口可以直接打开发布页面
+* edage bug:
+	An unexpected error occurred. If you continue to receive this error please contact your Tableau Server Administrator.		Session ID: 4EE215CFAD0644B0B24A36AA1545A05A-0:3		InvalidCharacterError 
+	
+* tableau 使用custom sql时会有这么个问题(could not find sheet with name: 品类[0])：http://kb.tableau.com/articles/issue/errors-tableauexception-or-could-not-find-sheet-with-name-sheet-0-when-publishing-a-workbook-to-tableau-server-or-and-tableau-online
+
+即做好后上传到server 打开时老报错，有这问题的desktop 版本 10.2.4 以下、10.3.2以下、10.4
+
+大家注意下 
+
+* Invalid database name value" When Refreshing an Excel Data Source: 使用extract方式可以解决
+	http://kb.tableau.com/articles/issue/error-tableauexception-invalid-database-name-value-when-refreshing-an-excel-data-source
+
+	
+	
 
 

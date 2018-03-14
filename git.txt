@@ -91,5 +91,6 @@ Created 星期二 06 十月 2015
 * git diff somecommit — . ':!somedir' 可忽略某个目录
 * git clone --depth 5 somerepso -b sometag
 * git submodule update --init --recursive
+* .git-credentials: 可以设置默认用户名密码
 
 

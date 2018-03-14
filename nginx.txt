@@ -73,3 +73,11 @@ location ~*.(gif|jpg|swf)$ {
 	}
 * 以点开头的路径下的文件不能访问到, 如/.well-known/index.html 总是返回403; 多一个文件层级即可解决问题: [[/.well-known/somedir/index.html]]
 * TLS 1.1 and TLS 1.2 are supported since nginx-1.0.12
+* 在配置单页面应用时，如果使用历史模式，index.html应不允许cache。因为当有更新时，如果index.html被前端cache, 会导致引用不到最新的js和css, 整个网站得不到更新
+	而且前端是以path为单位更新的，需要每个path都刷新，才能保证每个path都引用到最新的html. 不然直接通过输入path进入网站，还是会使用cache的html。
+	 location @rewrites {
+		rewrite ^(.+)$ /index.html break;
+		expires -1;
+		add_header Cache-Control no-store;
+	  }
+

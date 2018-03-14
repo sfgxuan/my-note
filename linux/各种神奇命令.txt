@@ -175,4 +175,9 @@ Created 星期四 30 七月 2015
 	lsblk -d -o name,rota
 	cat [[/proc/scsi/scsi]]
 * 找到硬盘信息：udevadm info --query=all --name=/dev/sda
+* 找到service的配置文件位置：systemctl show -p FragmentPath network.service
+* yum install stress: stress 用来生成多个占用一定cpu的进程
+* sysctl的参数在/proc/sys/里面
+* 可查看pid可调度的CPU: taskset -cp $pid
+* iwconfig: 可以查看wifi ap bssid(mac)
 
