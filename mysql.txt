@@ -156,6 +156,14 @@ ADD INDEX `cdate` (`crawl_date` ASC);
 * 显示版本: SELECT VERSION();
 * utf8mb4 包含utf8, 可以支持emoji表情
 * mysql命令行乱码：set names utf8;
+* 忘记密码：
+	建文件包含如下
+	 MySQL 5.7.6 and later：ALTER USER 'root'@'localhost' IDENTIFIED BY 'MyNewPass';
+		 MySQL 5.7.5 and earlier: SET PASSWORD FOR 'root'@'localhost' = PASSWORD('MyNewPass');
+	启动mysqld时 指定文件： --init-file=上述文件
+	
+* group by 时不能选出非group by 字段的问题：set @@sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))
+* 不尝试ssl: mysql -u dev -h 47.88.228.47 -p --skip-ssl
 
 
 

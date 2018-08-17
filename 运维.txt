@@ -109,4 +109,7 @@ Created 星期二 05 一月 2016
 	SSDR,1.6T,SATA6,2.5,I-DV,S3520，读取密集型  8250元专票一块
 	960GB 固态硬盘 SATA 混合使用 MLC 6Gbps 2.5英寸硬盘，SM863， 5180元
 	
+* 显示ansible tags: ansible-playbook some.yaml --list-tasks
+* 检查某用户的public key: ansible all -m shell -a "grep sufagang /home/*/.ssh/authorized_keys" -l ym42 --become --become-user root
+	
 

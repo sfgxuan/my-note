@@ -18,3 +18,4 @@ Created 星期一 30 十一月 2015
 * redis-server 启动方式：redis-server /etc/redis/aksldjl.conf
 * redis-server 启动时要提前创建数据目录
 * pubsub channels 可以查看当前的频道
+* flushdb: 清空当前db

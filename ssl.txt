@@ -18,5 +18,15 @@ Created 星期三 06 四月 2016
 	csr, keys - 这两个文件夹可以不复制
 	
 * letsencrypt要读取域名的CAA信息：https://dns.google.com/query?name=www.dataone.ai&type=CAA&dnssec=true
+* 使用python requests访问https网站时报错：
+	HTTPSConnectionPool(host='www.baidu.com', port=443): Max retries exceeded with url: / (Caused by SSLError(SSLError("bad handshake: Error([('SSL routines', 'ssl3_get_server_certificate', 'certificate verify failed')],)",),))
+	解决办法：
+		cryptography 1.8 wheel links against OpenSSL 1.0.2
+		cryptography >= 1.8.1 wheel links against OpenSSL 1.1.0
+		
+		For newer version of cryptography to work on MacOS:
+		brew install openssl@1.1
+		
+* charles： 影响requests
 	
 

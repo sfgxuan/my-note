@@ -92,5 +92,6 @@ Created 星期二 06 十月 2015
 * git clone --depth 5 somerepso -b sometag
 * git submodule update --init --recursive
 * .git-credentials: 可以设置默认用户名密码
+* git add --patch <filename>: 提交文件部分改动
 
 

@@ -1,0 +1,10 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-03-19T17:47:37+08:00
+
+====== cdh ======
+Created 星期一 19 三月 2018
+
+* hue 提示：Could not start SASL: Error in sasl_client_start (-4) SASL(-4): no mechanism available: No worthy me
+  解决办法： yum -y install cyrus-sasl-plain cyrus-sasl-devel cyrus-sasl-gssapi 然后重启(kill)hue即可
+* beeline: !connect jdbc:hive2://localhost:10000/default

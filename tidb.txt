@@ -1,0 +1,8 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-08-14T12:25:16+08:00
+
+====== tidb ======
+Created 星期二 14 八月 2018
+
+* 查看ddl语句：admin show ddl;

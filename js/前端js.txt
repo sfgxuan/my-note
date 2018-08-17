@@ -80,3 +80,5 @@ Created 星期四 30 七月 2015
 * style.sheet.addRule可以添加css规则, 添加后在style标签里是看不到的, style.sheet.cssRules里有
 * Done is better than perfect
 * 可以设置document.domain来跨子域，注意只能跨子域
+* Object.getOwnPropertyDescriptor(window, '_nvc') 可以查看一个对象的某个属性是否是getter或者setter
+* 使用chrome前端调试修改JS时，console.log()函数打印不出内容

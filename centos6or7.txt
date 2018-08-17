@@ -27,3 +27,8 @@ Created 星期三 24 二月 2016
 * firewall-cmd --zone=public --add-port=2888/tcp --permanent
 * network config: PEERDNS=no 文档说可以让/etc/resolv.conf不被修改，但实际是在7.2还是会被修改，除非network config里面没有任何DNS设置
 * network and NetworkManager are two separate services that operate network connections
+* 分析kdump:
+	yum install crash
+	debuginfo-install kernel
+	crash /usr/lib/debug/lib/modules/2.6.32-69.el6.i686/vmlinux \ /var/crash/127.0.0.1-2010-08-25-08:45:02/vmcore
+* 强制设置网口建链速度：ETHTOOL_OPTS="speed 1000 duplex full autoneg off"

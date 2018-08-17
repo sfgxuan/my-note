@@ -168,6 +168,7 @@ Created 星期四 30 七月 2015
 * vsftpd: very secure ftp daemon
 * fuser somefile: 可以找到使用该资源的用户
 * screen内粘贴一条命令并执行：screen -r sfg -X stuff "shell command here\n"
+* 新建screen in detach mode: screen -dm -S sfg
 * postfix: linux邮件服务器
 * df -i: 可以查看可用inode数
 * 查看硬盘是否是ssd:
@@ -180,4 +181,10 @@ Created 星期四 30 七月 2015
 * sysctl的参数在/proc/sys/里面
 * 可查看pid可调度的CPU: taskset -cp $pid
 * iwconfig: 可以查看wifi ap bssid(mac)
-
+* force linux kernel to crash:
+	echo 1 > /proc/sys/kernel/sysrq 
+	echo c > /proc/sysrq-trigger
+* SKB=socket buffer
+* find命令用正则：find . -regex "\./SKIN-CARE.*[0-9]\.csv"。 find匹配的是全路径，因为正则前面要加./
+* sftp上传文件：sftp -i ~/.ssh/pgrr-sftp.pem -P 5557  rating-load@139.219.1.40 <<< "put /data/data/pg_files/pg_20180611-20180618.zip"
+* prod:sftp -i ~/.ssh/rr-upload-prod.pem -P 222  rr-upload:rQ3#kt7P@10.126.128.84

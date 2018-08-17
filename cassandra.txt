@@ -1,0 +1,198 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-03-27T18:24:23+08:00
+
+====== cassandra ======
+Created 星期二 27 三月 2018
+
+* nodetool tablestats <keyspaceName>.<tableName>
+* 82节点挂掉记：
+	1. 起因分析，在82上操作要给tmall.new_deal_stat添加一列时，报错：
+		  ServerError: <ErrorMessage code=0000 [Server error] message="java.lang.RuntimeException: java.util.concurrent.ExecutionException: org.apache.cassandra.exceptions.ConfigurationException: Column family ID mismatch (found 5db75c90-0cb2-11e8-94d6-8bdc198b0d6c; expected 5d9aacd0-0cb2-11e8-91db-891862de0895)"> 
+		  desc 被操作的表，发现结构描述是正确的，但是select * from该表时，发现没有新添加的字段。在其它节点上检查也是如此。
+		 2. 重启该节点无效，nodetool describecluster显示82节点有不一样的schema_version
+		 3. 尝试多次重启，尝试repair系统表，尝试让其down机半天以上再启动，还是无效
+		 4. 最后备份数据，清空82结点数据目录。根据官方文档：
+		 https://docs.datastax.com/en/cassandra/3.0/cassandra/operations/opsReplaceNode.html
+		 配置文件改两个地方：
+			 cassandra.yaml       [[auto_bootstrap:true]]
+			 cassandra-env.sh    JVM_OPTS="$JVM_OPTS -Dcassandra.replace_address=address_of_dead_node"
+        
+		  replace一个死掉的结点, 启动后观察发现82结点状态是un, describecluster不再有不同的schema version
+		 5. 然而并没能解决问题，结点间依然在handshake version. 被shake的节点有如下报错，且集群读写性能急剧下降
+		   WARN  [MessagingService-Incoming-/172.16.24.88] 2018-06-02 11:30:32,090 IncomingTcpConnection.java:101 - UnknownColumnFamilyException reading from socket; closing
+org.apache.cassandra.db.UnknownColumnFamilyException: Couldn't find table for cfId bf393180-0d63-11e8-8e85-3d91e7f475c4. If a table was just created, this is likely due to the schema not being fully propagated.  Please wait for schema agreement on table creation.
+	at org.apache.cassandra.config.CFMetaData$Serializer.deserialize(CFMetaData.java:1325) ~[apache-cassandra-3.0.8.jar:3.0.8]
+	at org.apache.cassandra.db.partitions.PartitionUpdate$PartitionUpdateSerializer.deserialize30(PartitionUpdate.java:656) ~[apache-cassandra-3.0.8.jar:3.0.8]
+	at org.apache.cassandra.db.partitions.PartitionUpdate$PartitionUpdateSerializer.deserialize(PartitionUpdate.java:631) ~[apache-cassandra-3.0.8.jar:3.0.8]
+	at org.apache.cassandra.db.Mutation$MutationSerializer.deserialize(Mutation.java:334) ~[apache-cassandra-3.0.8.jar:3.0.8]
+	at org.apache.cassandra.db.Mutation$MutationSerializer.deserialize(Mutation.java:353) ~[apache-cassandra-3.0.8.jar:3.0.8]
+	at org.apache.cassandra.db.Mutation$MutationSerializer.deserialize(Mutation.java:290) ~[apache-cassandra-3.0.8.jar:3.0.8]
+	at org.apache.cassandra.net.MessageIn.read(MessageIn.java:98) ~[apache-cassandra-3.0.8.jar:3.0.8]
+	at org.apache.cassandra.net.IncomingTcpConnection.receiveMessage(IncomingTcpConnection.java:201) ~[apache-cassandra-3.0.8.jar:3.0.8]
+	at org.apache.cassandra.net.IncomingTcpConnection.receiveMessages(IncomingTcpConnection.java:178) ~[apache-cassandra-3.0.8.jar:3.0.8]
+	at org.apache.cassandra.net.IncomingTcpConnection.run(IncomingTcpConnection.java:92) ~[apache-cassandra-3.0.8.jar:3.0.8]
+ 
+	   6. 之后尝试从集群中删除82节点，历时约一天时间后，集群成功删除掉82并完成数据平衡，然而问题依旧，集群性能变得更差。
+	   7. 之后根据这篇帖子http://grokbase.com/t/cassandra/user/15barhz1gm/unknowncolumnfamily-exception-schema-inconsistencies#201511103szpbd37pgskqmgf6s2r4sqx7c
+		  轮流重启了数据目录里面没有问题表的新版本文件夹的结点，重启完成后发现新的数据目录出现，但大小很小，里面的数据应该是新写进来的
+
+	   8. 根据上面的帖子，将老的数据目录的数据文件直接复制到新的数据目录下，运行nodetool refresh tmall raw_price3, 大部分都可以成功导入。
+		   84, 86 节点有报错：Stats component is missing for sstable. 个别数据文件有缺失，考虑到集群是3重备份，个别数据文件缺失应该不会丢数据
+
+	   9.  附一份新老数据文件对比：
+
+	ym87 | SUCCESS | rc=0 >>
+	0	/data/data/cassandra/data/tmall/raw_price3-bf3931800d6311e88e853d91e7f475c4
+	676G	/data/data/cassandra/data/tmall/raw_price3-bf4df2000d6311e88e853d91e7f475c4
+	
+	ym82 | SUCCESS | rc=0 >>
+	0	/data/data/cassandra/data/tmall/raw_price3-bf4df2000d6311e88e853d91e7f475c4
+	
+	ym85 | SUCCESS | rc=0 >>
+	0	/data/data/cassandra/data/tmall/raw_price3-bf3931800d6311e88e853d91e7f475c4
+	688G	/data/data/cassandra/data/tmall/raw_price3-bf4df2000d6311e88e853d91e7f475c4
+	
+	ym86 | SUCCESS | rc=0 >>
+	0	/data/data/cassandra/data/tmall/raw_price3-bf3931800d6311e88e853d91e7f475c4
+	700G	/data/data/cassandra/data/tmall/raw_price3-bf4df2000d6311e88e853d91e7f475c4
+	
+	ym89 | SUCCESS | rc=0 >>
+	0	/data/data/cassandra/data/tmall/raw_price3-bf3931800d6311e88e853d91e7f475c4
+	624G	/data/data/cassandra/data/tmall/raw_price3-bf4df2000d6311e88e853d91e7f475c4
+	
+	ym83 | SUCCESS | rc=0 >>
+	0	/data/data/cassandra/data/tmall/raw_price3-bf3931800d6311e88e853d91e7f475c4
+	670G	/data/data/cassandra/data/tmall/raw_price3-bf4df2000d6311e88e853d91e7f475c4
+	
+	ym88 | SUCCESS | rc=0 >>
+	0	/data/data/cassandra/data/tmall/raw_price3-bf3931800d6311e88e853d91e7f475c4
+	643G	/data/data/cassandra/data/tmall/raw_price3-bf4df2000d6311e88e853d91e7f475c4
+	
+	ym84 | SUCCESS | rc=0 >>
+	0	/data/data/cassandra/data/tmall/raw_price3-bf3931800d6311e88e853d91e7f475c4
+	740G	/data/data/cassandra/data/tmall/raw_price3-bf4df2000d6311e88e853d91e7f475c4
+	
+	ym90 | SUCCESS | rc=0 >>
+	0	/data/data/cassandra/data/tmall/raw_price3-bf3931800d6311e88e853d91e7f475c4
+	705G	/data/data/cassandra/data/tmall/raw_price3-bf4df2000d6311e88e853d91e7f475c4
+	
+	
+	ym91 | SUCCESS | rc=0 >>
+	0	/data/data/cassandra/data/tmall/raw_price3-bf3931800d6311e88e853d91e7f475c4
+	727G	[[/data/data/cassandra/data/tmall/raw_price3-bf4df2000d6311e88e853d91e7f475c4]]
+	
+	10. 添加82结点，发现集群性能特别差，又很快删除该结点，发现集群竟然触发了大规模数据迁移：
+	ym87 | SUCCESS | rc=0 >>
+			Receiving 326 files, 60059731121 bytes total. Already received 261 files, 50740561130 bytes total
+			Receiving 389 files, 153944670964 bytes total. Already received 142 files, 43346784433 bytes total
+			Receiving 471 files, 234962168091 bytes total. Already received 197 files, 65626011819 bytes total
+			Receiving 313 files, 123989133317 bytes total. Already received 207 files, 47378312473 bytes total
+			Sending 470 files, 145262158501 bytes total. Already sent 376 files, 74030369511 bytes total
+			Sending 340 files, 108060043458 bytes total. Already sent 272 files, 70606003087 bytes total
+	
+	ym82 | FAILED | rc=1 >>
+	nodetool: Failed to connect to '127.0.0.1:7199' - ConnectException: 'Connection refused'.
+	
+	ym90 | SUCCESS | rc=0 >>
+			Receiving 561 files, 126882444055 bytes total. Already received 455 files, 63550768570 bytes total
+			Receiving 501 files, 243881020232 bytes total. Already received 240 files, 63615109061 bytes total
+			Receiving 314 files, 54266902103 bytes total. Already received 260 files, 45547837789 bytes total
+			Receiving 368 files, 70059173985 bytes total. Already received 293 files, 52772695123 bytes total
+			Receiving 357 files, 132784726646 bytes total. Already received 207 files, 47644107004 bytes total
+			Sending 343 files, 110530365079 bytes total. Already sent 269 files, 75838437682 bytes total
+			Sending 431 files, 131277128642 bytes total. Already sent 336 files, 77877111049 bytes total
+			Sending 379 files, 83692641743 bytes total. Already sent 356 files, 79020813174 bytes total
+	
+	ym91 | SUCCESS | rc=0 >>
+			Receiving 463 files, 144593348926 bytes total. Already received 217 files, 45390397281 bytes total
+			Receiving 349 files, 113204195447 bytes total. Already received 239 files, 49024453457 bytes total
+			Receiving 325 files, 70507042421 bytes total. Already received 284 files, 62449289997 bytes total
+			Receiving 411 files, 79496946136 bytes total. Already received 311 files, 42920268268 bytes total
+			Receiving 430 files, 218438774961 bytes total. Already received 276 files, 57916428425 bytes total
+			Receiving 470 files, 145262158501 bytes total. Already received 376 files, 73516567271 bytes total
+			Sending 459 files, 153329388817 bytes total. Already sent 308 files, 59301714454 bytes total
+			Sending 471 files, 234962168091 bytes total. Already sent 197 files, 66097871019 bytes total
+			Sending 501 files, 243881020232 bytes total. Already sent 240 files, 63615033907 bytes total
+	
+	ym89 | SUCCESS | rc=0 >>
+			Receiving 434 files, 136052402345 bytes total. Already received 232 files, 50884797702 bytes total
+			Receiving 347 files, 127003563725 bytes total. Already received 253 files, 56811221573 bytes total
+			Receiving 496 files, 213043167436 bytes total. Already received 179 files, 48697035823 bytes total
+			Sending 390 files, 111822591909 bytes total. Already sent 290 files, 58339990741 bytes total
+			Sending 339 files, 72742263782 bytes total. Already sent 280 files, 60370500240 bytes total
+			Sending 272 files, 79828820005 bytes total. Already sent 193 files, 59914369847 bytes total
+			Sending 430 files, 218438774961 bytes total. Already sent 276 files, 57913174887 bytes total
+			Sending 295 files, 121532455803 bytes total. Already sent 214 files, 59138289732 bytes total
+	
+	ym83 | SUCCESS | rc=0 >>
+			Sending 561 files, 126882444055 bytes total. Already sent 455 files, 63781455290 bytes total
+			Sending 409 files, 156630991747 bytes total. Already sent 281 files, 60390293135 bytes total
+			Sending 325 files, 70507042421 bytes total. Already sent 284 files, 62456804425 bytes total
+			Receiving 545 files, 230550263166 bytes total. Already received 186 files, 54984996506 bytes total
+			Receiving 334 files, 120869699100 bytes total. Already received 245 files, 50543177821 bytes total
+			Receiving 390 files, 111822591909 bytes total. Already received 290 files, 58330863159 bytes total
+			Receiving 325 files, 42674079110 bytes total. Already received 307 files, 42385212139 bytes total
+			Receiving 353 files, 127103602022 bytes total. Already received 260 files, 44828566884 bytes total
+	
+	ym86 | SUCCESS | rc=0 >>
+			Sending 381 files, 136719215787 bytes total. Already sent 157 files, 42840884017 bytes total
+			Sending 325 files, 42674079110 bytes total. Already sent 307 files, 42573955819 bytes total
+			Sending 287 files, 52916070938 bytes total. Already sent 249 files, 43425324290 bytes total
+			Sending 389 files, 153944670964 bytes total. Already sent 142 files, 43671842993 bytes total
+			Sending 314 files, 54266902103 bytes total. Already sent 260 files, 45589780829 bytes total
+			Sending 319 files, 100541781747 bytes total. Already sent 225 files, 44252119294 bytes total
+			Sending 411 files, 79496946136 bytes total. Already sent 311 files, 42928433252 bytes total
+			Receiving 340 files, 108060043458 bytes total. Already received 272 files, 70675866833 bytes total
+			Receiving 409 files, 156630991747 bytes total. Already received 281 files, 59108705280 bytes total
+			Receiving 374 files, 95181167622 bytes total. Already received 280 files, 47422160948 bytes total
+			Receiving 329 files, 66278479591 bytes total. Already received 308 files, 37947915668 bytes total
+			Receiving 459 files, 153329388817 bytes total. Already received 309 files, 59343730372 bytes total
+			Receiving 426 files, 148805179444 bytes total. Already received 202 files, 54499036307 bytes total
+	
+	ym88 | SUCCESS | rc=0 >>
+			Receiving 344 files, 221563151063 bytes total. Already received 164 files, 46349344156 bytes total
+			Receiving 295 files, 121532455803 bytes total. Already received 214 files, 59252924863 bytes total
+			Receiving 319 files, 100541781747 bytes total. Already received 225 files, 43885117694 bytes total
+			Receiving 431 files, 131277128642 bytes total. Already received 336 files, 78056359155 bytes total
+			Receiving 376 files, 57164599866 bytes total. Already received 336 files, 50513954456 bytes total
+			Sending 294 files, 123629365377 bytes total. Already sent 210 files, 57506841279 bytes total
+			Sending 426 files, 148805179444 bytes total. Already sent 202 files, 54584023949 bytes total
+			Sending 463 files, 145416097636 bytes total. Already sent 246 files, 53485793244 bytes total
+			Sending 545 files, 230550263166 bytes total. Already sent 186 files, 55089819761 bytes total
+			Sending 347 files, 127003563725 bytes total. Already sent 253 files, 57157251653 bytes total
+	
+	ym85 | SUCCESS | rc=0 >>
+			Sending 349 files, 113204195447 bytes total. Already sent 240 files, 49439376724 bytes total
+			Sending 329 files, 66278479591 bytes total. Already sent 308 files, 49303993748 bytes total
+			Sending 334 files, 120869699100 bytes total. Already sent 245 files, 51214266461 bytes total
+			Sending 376 files, 57164599866 bytes total. Already sent 336 files, 50547971887 bytes total
+			Sending 368 files, 70059173985 bytes total. Already sent 295 files, 52863815556 bytes total
+			Sending 326 files, 72902470633 bytes total. Already sent 258 files, 50211131155 bytes total
+			Sending 434 files, 136052402345 bytes total. Already sent 233 files, 50954812928 bytes total
+			Receiving 339 files, 72742263782 bytes total. Already received 281 files, 60493842536 bytes total
+			Receiving 473 files, 223494373595 bytes total. Already received 215 files, 47192882014 bytes total
+			Receiving 381 files, 136719215787 bytes total. Already received 157 files, 41708421937 bytes total
+			Receiving 379 files, 83692641743 bytes total. Already received 359 files, 79192866276 bytes total
+			Receiving 294 files, 123629365377 bytes total. Already received 210 files, 57510086481 bytes total
+			Sending 326 files, 60059731121 bytes total. Already sent 261 files, 50824457311 bytes total
+	
+	ym84 | SUCCESS | rc=0 >>
+			Sending 313 files, 123989133317 bytes total. Already sent 207 files, 47519439116 bytes total
+			Sending 496 files, 213043167436 bytes total. Already sent 179 files, 49294724143 bytes total
+			Sending 374 files, 95181167622 bytes total. Already sent 280 files, 47673819188 bytes total
+			Sending 357 files, 132784726646 bytes total. Already sent 210 files, 47740827010 bytes total
+			Sending 473 files, 223494373595 bytes total. Already sent 215 files, 47194217951 bytes total
+			Sending 463 files, 144593348926 bytes total. Already sent 218 files, 45465996694 bytes total
+			Sending 353 files, 127103602022 bytes total. Already sent 260 files, 44985853284 bytes total
+			Receiving 326 files, 72902470633 bytes total. Already received 258 files, 50225858472 bytes total
+			Receiving 287 files, 52916070938 bytes total. Already received 249 files, 43508290343 bytes total
+			Receiving 343 files, 110530365079 bytes total. Already received 269 files, 76100331137 bytes total
+			Receiving 463 files, 145416097636 bytes total. Already received 247 files, 53527721758 bytes total
+			Receiving 272 files, 79828820005 bytes total. Already received 193 files, 60071638989 bytes total
+			Sending 344 files, 221563151063 bytes total. Already sent 164 files, 46538087836 bytes total
+
+
+
+
+

@@ -39,5 +39,8 @@ Created 星期三 22 六月 2016
 	COPYFILE_DISABLE=1 tar zcf oface.tar.gz oface
 	
 * 查看wifi ap bssid: [[/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airpor]] -s
-	sudo ln -s /System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport /usr/sbin/airport
+	sudo ln -s /System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport [[/usr/sbin/airport]]
+	
+* 将私钥添加到keychain: ssh-add -K [[/path/to/keyfile]]
+* sierra系统启动时不自动加ssh-add的问题：curl -o ~/Library/LaunchAgents/ssh.add.a.plist https://raw.githubusercontent.com/jirsbek/SSH-keys-in-macOS-Sierra-keychain/master/ssh.add.a.plist
 	

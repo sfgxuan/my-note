@@ -24,6 +24,7 @@ git checkout 2.0
 * node-webshot 可以返回文件流
 * phantomjs 输出pdf 使用@media print 的style, 输出png使用@media screen的style 
 * phantomjs 输出pdf使用@media screen的方法（修改源代码重新编译）：https://github.com/jakgra/website-pdf-snapshot-taker
+* debug: phantomjs --debug=yes --ignore-ssl-errors=true --ssl-protocol=any --web-security=true rasterize.js http://netflix.com test.png
 
 ==== phantomjs-node 不支持cluster多进程，如使用pm2会引起pm2崩溃 ====
 

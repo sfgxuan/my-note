@@ -97,6 +97,8 @@ Created 星期二 26 九月 2017
 
 * Invalid database name value" When Refreshing an Excel Data Source: 使用extract方式可以解决
 	http://kb.tableau.com/articles/issue/error-tableauexception-invalid-database-name-value-when-refreshing-an-excel-data-source
+	
+* 普通用户看不到filter的问题：https://community.tableau.com/thread/159222
 
 	
 	
