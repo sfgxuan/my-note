@@ -28,5 +28,7 @@ Created 星期三 06 四月 2016
 		brew install openssl@1.1
 		
 * charles： 影响requests
+
+* 查看二进制(der)格式的私钥：openssl x509 -in clientCert.crt -inform der -text -noout
 	
 

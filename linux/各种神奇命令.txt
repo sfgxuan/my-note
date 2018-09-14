@@ -187,4 +187,5 @@ Created 星期四 30 七月 2015
 * SKB=socket buffer
 * find命令用正则：find . -regex "\./SKIN-CARE.*[0-9]\.csv"。 find匹配的是全路径，因为正则前面要加./
 * sftp上传文件：sftp -i ~/.ssh/pgrr-sftp.pem -P 5557  rating-load@139.219.1.40 <<< "put /data/data/pg_files/pg_20180611-20180618.zip"
-* prod:sftp -i ~/.ssh/rr-upload-prod.pem -P 222  rr-upload:rQ3#kt7P@10.126.128.84
+* prod: sftp -i ~/.ssh/rr-upload-prod.pem -P 5557  rr-upload@139.219.12.49 <<< "put /data/data/pg_files/sftp/pg_20180813-20180820.zip"
+* ES匹配空字符串：-content: /.+/
