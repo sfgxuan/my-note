@@ -189,3 +189,4 @@ Created 星期四 30 七月 2015
 * sftp上传文件：sftp -i ~/.ssh/pgrr-sftp.pem -P 5557  rating-load@139.219.1.40 <<< "put /data/data/pg_files/pg_20180611-20180618.zip"
 * prod: sftp -i ~/.ssh/rr-upload-prod.pem -P 5557  rr-upload@139.219.12.49 <<< "put /data/data/pg_files/sftp/pg_20180813-20180820.zip"
 * ES匹配空字符串：-content: /.+/
+* mac时间戳转时间串: date -r timestampinsecond；linux: date -d @timestampinsecond
