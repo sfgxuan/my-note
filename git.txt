@@ -93,5 +93,8 @@ Created 星期二 06 十月 2015
 * git submodule update --init --recursive
 * .git-credentials: 可以设置默认用户名密码
 * git add --patch <filename>: 提交文件部分改动
+* git log -p --author=sufagang: 查看某个匹配用户名的log
+* 重命名branch: git branch -m new-name
+* 同步子项目origin: git submodule sync
 
 

@@ -135,6 +135,7 @@ ADD INDEX `cdate` (`crawl_date` ASC);
 * 给一个用户只读权限：
 	create user 'wankemit'@'%' identified by '3baa18d7';
 	grant select on db_fang.* to wankemit@'%' identified by '3baa18d7';
+	db名也可以使用通配符: grant select on `yidrone_%`.* to da@'172.16.24.%';
 	flush privileges;
 * 从csv导入数据： 要求列的顺序和数据库顺序一致
 	LOAD DATA LOCAL INFILE '/home/sufagang/tmp/user.csv' INTO TABLE user FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 ROWS
@@ -164,6 +165,9 @@ ADD INDEX `cdate` (`crawl_date` ASC);
 	
 * group by 时不能选出非group by 字段的问题：set @@sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))
 * 不尝试ssl: mysql -u dev -h 47.88.228.47 -p --skip-ssl
+* https://www.percona.com/blog/2013/09/25/how-to-reclaim-space-in-innodb-when-innodb_file_per_table-is-on:
+    当上述选项打开时，delete row之后table占用的空间不会立即释放，而是留待后用。如果要主动释放，需要`optimize table table_name`,
+    这样会重建table文件，但需要有额外的磁盘空间来支持重建
 
 
 

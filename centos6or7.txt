@@ -32,3 +32,4 @@ Created 星期三 24 二月 2016
 	debuginfo-install kernel
 	crash /usr/lib/debug/lib/modules/2.6.32-69.el6.i686/vmlinux \ /var/crash/127.0.0.1-2010-08-25-08:45:02/vmcore
 * 强制设置网口建链速度：ETHTOOL_OPTS="speed 1000 duplex full autoneg off"
+* 系统启动后network ip设置不上的问题：systemctl restart NetworkManager && systemctl restart network

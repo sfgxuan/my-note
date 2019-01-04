@@ -190,3 +190,8 @@ Created 星期四 30 七月 2015
 * prod: sftp -i ~/.ssh/rr-upload-prod.pem -P 5557  rr-upload@139.219.12.49 <<< "put /data/data/pg_files/sftp/pg_20180813-20180820.zip"
 * ES匹配空字符串：-content: /.+/
 * mac时间戳转时间串: date -r timestampinsecond；linux: date -d @timestampinsecond
+* 修改进程ID最大值：echo 4194303 > /proc/sys/kernel/pid_max
+  默认只有65535，当进程ID分配到上限时，新进程无法获取新的ID，会报can not allocate memory之类的错
+* 查mx记录：nslookup -querytype=mx yimian.com.cn
+* 查端口是否开放：nmap -p 9222 127.0.0.1
+* 查看linux用户权限: capsh --print      (ie. capabilities CAP_SYS_RESOURCE)

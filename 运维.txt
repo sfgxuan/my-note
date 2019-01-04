@@ -111,5 +111,9 @@ Created 星期二 05 一月 2016
 	
 * 显示ansible tags: ansible-playbook some.yaml --list-tasks
 * 检查某用户的public key: ansible all -m shell -a "grep sufagang /home/*/.ssh/authorized_keys" -l ym42 --become --become-user root
+* 使用lvm:
+    创建pv: pvcreate /dev/xxx /dev/yyy
+    创建vg: vgcreate vgname /dev/xxx /dev/yyy
+    创建lv: lvcreate -I 4096 -i 3 -l 100%FREE -n data vg
 	
 
