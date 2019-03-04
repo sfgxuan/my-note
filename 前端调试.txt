@@ -13,3 +13,5 @@ Created 星期一 05 十月 2015
 	2. snapshot2 然后做同样的操作A
 	3. snapshot3 在snapshot3中查看snapshot1到snaphot2过程中分配的对象
 	https://docs.google.com/presentation/d/1wUVmf78gG-ra5aOxvTfYdiLkdGaR9OhXRnOlIcEmu2s/pub?start=false&loop=false&delayms=3000&slide=id.g31ec7af_0_58
+
+* chrome 开启devtool protocol的选项：--remote-debugging-port=9222 --remote-debugging-address=0.0.0.0 (address必须是headless时才生效)

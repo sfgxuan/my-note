@@ -156,7 +156,7 @@ Created 星期四 30 七月 2015
 * 添加已有用户到已有组：usermod -a -G docker ymweb
 * [[/etc/ssh/ssh_config:]] SendEnv 会把当前系统的env变量传到远端，影响服务器的环境变量
 * bindkey 可以显示或者设置命令行快捷键
-* 找文件中有没有某串：sudo grep -Rn yujia `sudo find /home -name authorized_keys`
+* 找文件中有没有某串：sudo grep -Rn yujia `sudo find /home/*/.ssh -name authorized_keys`
 * dig: dns解析工具
 	查看tld(top level domain)的服务器：dig ns com, tld server返回的是某个二级域名应该找哪个server去要实际的解析
 
@@ -195,3 +195,5 @@ Created 星期四 30 七月 2015
 * 查mx记录：nslookup -querytype=mx yimian.com.cn
 * 查端口是否开放：nmap -p 9222 127.0.0.1
 * 查看linux用户权限: capsh --print      (ie. capabilities CAP_SYS_RESOURCE)
+* Linux下简单好用的工具rinetd，实现端口映射/转发/重定向
+* influxdb: influx -host 172.16.24.37

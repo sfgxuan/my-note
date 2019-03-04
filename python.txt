@@ -71,4 +71,5 @@ Created 星期三 29 七月 2015
 * 开FTP: sudo python -m pyftpdlib -w -u sfg -P sfg -p 21
 * unicode_escape: s='人'  s.encode("unicode_escape")
 * ipython: %history -f filename 可存储已打下的命令
-
+* pytest显示print: pytest -s
+* pymysql打印实际执行的sql: print(self.cursor._last_executed)

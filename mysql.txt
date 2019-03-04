@@ -168,7 +168,6 @@ ADD INDEX `cdate` (`crawl_date` ASC);
 * https://www.percona.com/blog/2013/09/25/how-to-reclaim-space-in-innodb-when-innodb_file_per_table-is-on:
     当上述选项打开时，delete row之后table占用的空间不会立即释放，而是留待后用。如果要主动释放，需要`optimize table table_name`,
     这样会重建table文件，但需要有额外的磁盘空间来支持重建
-
-
-
-
+* 显示列信息：show full columns from tmall.product
+* 显示表信息：show table status
+* 配置文件mysqld块下加: skip_ssl, 可关闭服务端ssl, 检测命令：SHOW VARIABLES LIKE '%ssl%';

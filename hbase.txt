@@ -1,0 +1,5 @@
+* curd的报错：UnexpectedError: must be str, not bytes, 其实是phoenix返回了408(没有在服务端规定的时间内完成请求发送), 是解析这个错误时的报错：
+b"<html><body><h1>408 Request Time-out</h1>\nYour browser didn't send a complete request in time.
+\n</body></html>\n
+
+* phoenix-sqlline 显示长度设置：!set maxWidth 2048
