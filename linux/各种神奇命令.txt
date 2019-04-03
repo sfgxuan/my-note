@@ -197,3 +197,4 @@ Created 星期四 30 七月 2015
 * 查看linux用户权限: capsh --print      (ie. capabilities CAP_SYS_RESOURCE)
 * Linux下简单好用的工具rinetd，实现端口映射/转发/重定向
 * influxdb: influx -host 172.16.24.37
+* ssl版本检测：openssl s_client -connect github.com:443 -msg

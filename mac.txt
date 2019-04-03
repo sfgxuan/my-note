@@ -45,4 +45,12 @@ Created 星期三 22 六月 2016
 * sierra系统启动时不自动加ssh-add的问题：curl -o ~/Library/LaunchAgents/ssh.add.a.plist https://raw.githubusercontent.com/jirsbek/SSH-keys-in-macOS-Sierra-keychain/master/ssh.add.a.plist
 * 设置休眠时间：pmset sleep 0; 设置硬盘休眠时间: pmset disksleep 0; 获取电源相关设置：pmset -g
 * 修改通知banner显示时间：defaults write com.apple.notificationcenterui bannerTime 1
+* 搭vsftpd:
+    brew install vsftpd
+    配置文件加：
+        local_root=/data/vsftpd  # 路径
+        secure_chroot_dir=/tmp/empty  # 空目录，有用
+        pam_service_name=ftpd  # 解决本地账号登录老530的问题
+        local_enable=YES  # 本地账号登录
+        write_enable=YES  # 可写
 	

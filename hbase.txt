@@ -3,3 +3,6 @@ b"<html><body><h1>408 Request Time-out</h1>\nYour browser didn't send a complete
 \n</body></html>\n
 
 * phoenix-sqlline 显示长度设置：!set maxWidth 2048
+* 查看hbase table的split points:
+    hbase(main):011:0* sfg=get_table 'TAOBAO_COMMENT_SPLIT';
+    hbase(main):012:0* sfg.get_splits()

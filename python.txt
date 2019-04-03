@@ -73,3 +73,4 @@ Created 星期三 29 七月 2015
 * ipython: %history -f filename 可存储已打下的命令
 * pytest显示print: pytest -s
 * pymysql打印实际执行的sql: print(self.cursor._last_executed)
+* 100的二进制python串：b'\x00\x00\x00d', \x00是ascii码是0的空符, \x是16进制
