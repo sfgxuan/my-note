@@ -6,3 +6,6 @@ b"<html><body><h1>408 Request Time-out</h1>\nYour browser didn't send a complete
 * 查看hbase table的split points:
     hbase(main):011:0* sfg=get_table 'TAOBAO_COMMENT_SPLIT';
     hbase(main):012:0* sfg.get_splits()
+* phoenix-sqlline.py安装：直接下载压缩包解压，里面的bin/*可以直接运行
+* phoenixdb cursor放久后execute得到空结果的问题：phoenixdb.cursor.py里execute时，如果参数params是None, 为被当成CreateStatement处理，
+  statement_id维持上一个(同一个cursor)，猜测相同的statement_id在后端不是全新的查询，返回空可能与不同statement_id没变有关

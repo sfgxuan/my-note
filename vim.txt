@@ -100,4 +100,5 @@ set expandtab
 * vim 改变大小写: ~大小写切换, u变小写, U变大写
 * vim打开文件夹，点击enter进入某文件后，可以ctrl+6返回文件夹
 * :E directory打开文件夹
+* :ls 显示打开的文件列表，:b number 切换到列表中的某个文件
 
