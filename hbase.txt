@@ -9,3 +9,25 @@ b"<html><body><h1>408 Request Time-out</h1>\nYour browser didn't send a complete
 * phoenix-sqlline.py安装：直接下载压缩包解压，里面的bin/*可以直接运行
 * phoenixdb cursor放久后execute得到空结果的问题：phoenixdb.cursor.py里execute时，如果参数params是None, 为被当成CreateStatement处理，
   statement_id维持上一个(同一个cursor)，猜测相同的statement_id在后端不是全新的查询，返回空可能与不同statement_id没变有关
+
+* 命令行连接hbase:
+    1. 下载phoenix解压进到bin目录执行sqlline.py
+    2. 需要各个hbase服务器的主机名解析正确
+    3. /etc/hbase/conf/hbase-site.xml里需要加配置项(如果没有该文件及目录，可从phoenix解压后文件中找出并复制到相应位置再修改)：
+        ```
+        <property>
+            <name>phoenix.schema.isNamespaceMappingEnabled</name>
+            <value>true</value>
+        </property>
+        ```
+
+* squirrel(图形客户端)连接hbase:
+    1. 下载安装squirrel, 下载phoenix并解压
+    2. 由于我们的hbase开启了namespaceMapping，而squirrel无法进行相应配置。
+       尝试用`jar uf phoenix-4.14.0-cdh5.14.2-client.jar /etc/hbase/conf/hbase-site.xml`将配置文件压到client jar里也不行
+    3. 网上找的方法，需要使用瘦连接的方式，我们的hbase本身也起了瘦服务端: `https://blog.csdn.net/wumiqing1/article/details/85088777`
+       - 将瘦客户端jar拷贝到squirrel java/lib目录： phoenix-4.14.0-cdh5.14.2-thin-client.jar
+       - 按官方说明`http://phoenix.apache.org/installation.html`配置phoenix driver时
+           - URI: `jdbc:phoenix:thin:url=http://10.3.10.233:8765;serialization=PROTOBUF`
+           - 类名: `org.apache.phoenix.queryserver.client.Driver`
+       - alias链接url同样：`jdbc:phoenix:thin:url=http://10.3.10.233:8765;serialization=PROTOBUF`

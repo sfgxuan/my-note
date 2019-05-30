@@ -198,3 +198,4 @@ Created 星期四 30 七月 2015
 * Linux下简单好用的工具rinetd，实现端口映射/转发/重定向
 * influxdb: influx -host 172.16.24.37
 * ssl版本检测：openssl s_client -connect github.com:443 -msg
+* hadoop run mapreduce from python: `hadoop jar /opt/cloudera/parcels/CDH-5.14.2-1.cdh5.14.2.p0.3/lib/hadoop-mapreduce/hadoop-streaming.jar -input /sfg/daily.csv -output /sfg/output -mapper mapper.py -reducer reducer.py`
