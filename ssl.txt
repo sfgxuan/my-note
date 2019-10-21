@@ -26,6 +26,8 @@ Created 星期三 06 四月 2016
 		
 		For newer version of cryptography to work on MacOS:
 		brew install openssl@1.1
+
+		https://www.jianshu.com/p/8deb13738d2c
 		
 * charles： 影响requests
 

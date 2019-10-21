@@ -26,3 +26,4 @@ TerminalWindow .notebook tab:active {
 * chrome://net-internals/#hsts 可删除http总是自动转到https的问题
 * webstorm 移动html标签头尾alt+cmd+]/[
 * mac chrome插件位置：/Users/sufagang/Library/Application Support/Google/Chrome/Default/Extensions
+* pycharm配置文件位置：/Users/sufagang/Library/Preferences

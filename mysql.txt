@@ -24,7 +24,7 @@ select TABLE_NAME,UPDATE_TIME from information_schema.TABLES where TABLE_SCHEMA=
 	mysql -h localhost -u datamaster -p --socket=/tmp/mysql_bigdata.sock
 	
 * 创建临时表并从select插入数据：create temporary table db.temp  (SELECT * FROM mysql.user where User='datamaster');
-* 导出表结构并与线上结构比较(dump出结构然后diff文件)：mysqldump -u root -P 6033 -p -h 192.168.1.201 -d infographics > infographics_dev.struct
+* 导出表结构并与线上结构比较(dump出结构然后diff文件)：mysqldump -u root -P 6033 -p -h 192.168.1.201 infographics > infographics_dev.struct
 
 
 * MySQL can use multiple-column indexes for queries that test all the columns in the index, or queries that test just the first column, the first two columns, the first three columns, and so on. If you specify the columns in the right order in the index definition, a single composite index can speed up several kinds of queries on the same table.

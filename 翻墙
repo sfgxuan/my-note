@@ -1,0 +1,7 @@
+* tor代理可使用multitor: multitor --init 10 --user root --socks-port 9000 --control-port 9900 --proxy privoxy --haproxy
+  测试：all_proxy=127.0.0.1:16379 curl http://ipinfo.io/ip
+  - 16379 是hadproxy代理统一端口
+  - multitor的原理是使用tor建sock5隧道，然后用privoxy将http请求转到sock5，再在privoxy上搭hadproxy统一入口
+  - multitor -k 可停止程序
+
+* proxychains4 tor: 可以在tor后加sock5, 解决国内连不上tor的问题

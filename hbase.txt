@@ -36,3 +36,6 @@ b"<html><body><h1>408 Request Time-out</h1>\nYour browser didn't send a complete
     - HADOOP_CLASSPATH="$(hbase mapredcp):/etc/hbase/conf" hadoop jar /opt/cloudera/parcels/APACHE_PHOENIX/lib/phoenix/phoenix-4.14.0-cdh5.14.2-client.jar org.apache.phoenix.mapreduce.CsvBulkLoadTool --table TMALL_COMMENT_MR --input /sfg/tmall.comment.-8975801478601287988_-8975491383539225521.csv
     - HADOOP_CLASSPATH="/opt/cloudera/parcels/CDH-5.14.2-1.cdh5.14.2.p0.3/jars/hbase-protocol-1.2.0-cdh5.14.2.jar:/etc/hbase/conf" hadoop jar /opt/cloudera/parcels/APACHE_PHOENIX/lib/phoenix/phoenix-4.14.0-cdh5.14.2-client.jar org.apache.phoenix.mapreduce.CsvBulkLoadTool --table TMALL_COMMENT_MR --input /sfg/sfg.csv -c ID,COMMENT_TIME,CONTENT,ORIGIN_DATA,PRODUCT_ID,SKU_ID,SNAPSHOT_TIME,USER_LEVEL_ID,USER_NICKNAME
     - 这个环境变量可能也有用：HBASE_CONF_DIR=/etc/hbase/conf/
+
+* 更改表结构后，依然报column notfound的问题，可能与UPDATE_CACHE_FREQUENCY这个参数有关，因为thin query server是一直跑着的，作为代理客户端可能一直没有更新
+  貌似的解决办法是：主动连到某台机做个upsert操作
