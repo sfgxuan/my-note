@@ -201,3 +201,6 @@ Created 星期四 30 七月 2015
 * hadoop run mapreduce from python: `hadoop jar /opt/cloudera/parcels/CDH-5.14.2-1.cdh5.14.2.p0.3/lib/hadoop-mapreduce/hadoop-streaming.jar -input /sfg/daily.csv -output /sfg/output -mapper mapper.py -reducer reducer.py`
 * ssh端口转发, 将服务器端口40004转发到本地的8000: `ssh -R 40004:0.0.0.0:8000 ymspider@172.16.24.37`
 * es还空格子查询：+_exists_: nlp +nlp.review\ type: Product
+* ssh代理隧道：su - leon -c "autossh -M 20007 -N -f -R 172.16.24.35:18090:192.168.2.203:8081 ymspider@172.16.24.35"
+  - 服务器sshd需要打开GatewayPorts选项，才能让端口绑定到0.0.0.0上
+  - Note that if you use OpenSSH sshd server, the server's GatewayPorts option needs to be enabled (set to yes or clientspecified) for this to work (check file /etc/ssh/sshd_config on the server). Otherwise (default value for this option is no), the server will always force the port to be bound on the loopback interface only.

@@ -39,3 +39,11 @@ b"<html><body><h1>408 Request Time-out</h1>\nYour browser didn't send a complete
 
 * 更改表结构后，依然报column notfound的问题，可能与UPDATE_CACHE_FREQUENCY这个参数有关，因为thin query server是一直跑着的，作为代理客户端可能一直没有更新
   貌似的解决办法是：主动连到某台机做个upsert操作
+* hbase查看index状态：select TABLE_NAME, cast(INDEX_DISABLE_TIMESTAMP as timestamp) from SYSTEM.CATALOG where index_state is not null limit 10;
+* org.apache.phoenix.job.JobManager$1@734e7cc1[Running, pool size = 128, active threads = 128, queued tasks = 5000, completed tasks = 646571046]
+  - 调大：phoenix.query.threadPoolSize phoenix.query.queueSize
+  - 重启查询客户端：重进phoenix-sqline.py或者重启supervisor里的query_server(每个节点都要)
+
+* Phoenix local index region split死锁问题：https://issues.apache.org/jira/browse/PHOENIX-3838. 貌似需要hbase1.3才可以解决
+    So, to sum up: Split's write lock call is waiting on an op to relinquish a read lock, the op is waiting on the indexer to finish, the indexer is waiting to acquire a read lock, which is waiting on Split's write lock. Eventually, the indexer ops timeout completely and the deadlock's broken, but that also triggers the indexer's emergency "kill the region server" behavior, so the region server crashes.
+

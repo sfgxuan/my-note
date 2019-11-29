@@ -27,3 +27,4 @@ TerminalWindow .notebook tab:active {
 * webstorm 移动html标签头尾alt+cmd+]/[
 * mac chrome插件位置：/Users/sufagang/Library/Application Support/Google/Chrome/Default/Extensions
 * pycharm配置文件位置：/Users/sufagang/Library/Preferences
+* chrome dev tools页面跳转后无法查看跳转前请法庭内容的问题：window.onunload = function() { debugger; }
