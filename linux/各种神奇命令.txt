@@ -204,3 +204,4 @@ Created 星期四 30 七月 2015
 * ssh代理隧道：su - leon -c "autossh -M 20007 -N -f -R 172.16.24.35:18090:192.168.2.203:8081 ymspider@172.16.24.35"
   - 服务器sshd需要打开GatewayPorts选项，才能让端口绑定到0.0.0.0上
   - Note that if you use OpenSSH sshd server, the server's GatewayPorts option needs to be enabled (set to yes or clientspecified) for this to work (check file /etc/ssh/sshd_config on the server). Otherwise (default value for this option is no), the server will always force the port to be bound on the loopback interface only.
+* top某个进程的线程：top -H -p 31830, ps -T -p <pid>

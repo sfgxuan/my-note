@@ -47,3 +47,18 @@ b"<html><body><h1>408 Request Time-out</h1>\nYour browser didn't send a complete
 * Phoenix local index region split死锁问题：https://issues.apache.org/jira/browse/PHOENIX-3838. 貌似需要hbase1.3才可以解决
     So, to sum up: Split's write lock call is waiting on an op to relinquish a read lock, the op is waiting on the indexer to finish, the indexer is waiting to acquire a read lock, which is waiting on Split's write lock. Eventually, the indexer ops timeout completely and the deadlock's broken, but that also triggers the indexer's emergency "kill the region server" behavior, so the region server crashes.
 
+* phoenix重命名：
+    第1： 先在hbase上把pho1修改成pho2，具体命令行如下：
+        hbase(main):001:0>disable 'pho1'
+        hbase(main):001:0>snapshot 'pho1','pho_test'
+        hbase(main):001:0>clone_snapshot 'pho_test','pho2'
+        hbase(main):001:0>delete_snapshot 'pho_test'
+        hbase(main):001:0>drop 'pho1'
+    第2：然后再phoenix上修改表pho1成表pho2:
+        0: jdbc:phoenix:db1,db2,db3:2181> drop table 'pho1'
+        0: jdbc:phoenix:db1,db2,db3:2181>create table 'pho2'("kid" varchar primary key, "info"."name" varchar);
+
+* 测试集群一直提示有region in transition(RIT):
+    - fsck: sudo -u hbase hbase hbck -fix; sudo -u hbase hbase hbck -repair均无效;
+    - 找到相关的region server重启
+
