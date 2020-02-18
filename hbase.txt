@@ -62,3 +62,7 @@ b"<html><body><h1>408 Request Time-out</h1>\nYour browser didn't send a complete
     - fsck: sudo -u hbase hbase hbck -fix; sudo -u hbase hbase hbck -repair均无效;
     - 找到相关的region server重启
 
+* master启动时，一直启动不起来：Timedout 300000ms waiting for namespace table to be assigned
+    - 问题可能是region在spliting时被强制重启了
+    - 解决办法：sudo -u hdfs hdfs dfs -rm -r -f /hbase/WALs/*
+
