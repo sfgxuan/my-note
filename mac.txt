@@ -53,4 +53,6 @@ Created 星期三 22 六月 2016
         pam_service_name=ftpd  # 解决本地账号登录老530的问题
         local_enable=YES  # 本地账号登录
         write_enable=YES  # 可写
+* ssh连不上：ssh_exchange_identification: Connection closed by remote host
+    /var/empty must be owned by root and not group or world-writable
 	
