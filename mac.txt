@@ -55,4 +55,9 @@ Created 星期三 22 六月 2016
         write_enable=YES  # 可写
 * ssh连不上：ssh_exchange_identification: Connection closed by remote host
     /var/empty must be owned by root and not group or world-writable
+
+* mac mini启动卡在: No /etc/rc.server
+    create /etc/rc.server with the following contents:
+    #!/bin/sh
+    /usr/sbin/BootCacheControl jettison﻿
 	
