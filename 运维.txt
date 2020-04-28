@@ -116,5 +116,10 @@ Created 星期二 05 一月 2016
     创建vg: vgcreate vgname /dev/xxx /dev/yyy
     创建lv: lvcreate -I 4096 -i 3 -l 100%FREE -n data vg
 * centos安装chrome: yum install https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm. 再到chromedriver官网下载个driver就可以用了
+
+* rundeck 配置：
+    配置文件：/etc/rundeck/rundeck-config.groovy
+    resource文件路径: /var/rundeck/projects/etc/resources.xml
+    公钥私钥位置：/var/lib/rundeck/.ssh/id_rsa
 	
 
