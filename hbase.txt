@@ -66,3 +66,15 @@ b"<html><body><h1>408 Request Time-out</h1>\nYour browser didn't send a complete
     - 问题可能是region在spliting时被强制重启了
     - 解决办法：sudo -u hdfs hdfs dfs -rm -r -f /hbase/WALs/*
 
+* 一个hbase phoenix query_server可能的问题：
+    现象：间隔10秒往一个表里写数据，发现几乎每次都会报: RETRY: OperationFailure: ('', None, None, None)
+        for i in range(100000):
+        v = str(random.randint(1000, 2000000))
+        time.sleep(10)
+        print(v)
+        new_hbase_session.create('TEST', {'ID': v, 'NAME': v, 'TEXT': v})
+    分析：报错在phoenixdb.avatica 129行, 错误信息: phoenix org.apache.calcite.avatica.NoSuchConnectionException,
+        即连接已经丢失。而如果写入时间间隔很短，则不会报这个错。这表明放置不用的这10秒，某些connection连接失效了
+        致于是程序到query_server的http连接，还是query_server到phoenix的连接，需要进一步定位问题
+        连接失效的原因多半是因为query_server负载太高，早期刚使用时并没有类似问题，query_server有一些参数可以尝试进行调节
+
