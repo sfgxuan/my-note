@@ -89,3 +89,4 @@ Created 星期三 29 七月 2015
     - 判断线程并不能利用多核cpu来做相关计算，导致资源竞争，延迟变高，并发打不上去
 
 * 显示某个类所在文件：sys.modules[SSLContext.__module__]
+* pyenv python openssl版本与homebrew 不兼容问题：重装pyenv里的python, 带上环境参数：CONFIGURE_OPTS="--with-openssl=$(brew --prefix openssl)" pyenv install 3.6.1
