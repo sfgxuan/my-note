@@ -60,4 +60,5 @@ Created 星期三 22 六月 2016
     create /etc/rc.server with the following contents:
     #!/bin/sh
     /usr/sbin/BootCacheControl jettison﻿
-	
+
+* mac批量替换：sed -i "" "s/envs\/or/envs\/or_test/g" `grep envs/or -rl .`
