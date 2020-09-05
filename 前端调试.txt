@@ -17,3 +17,12 @@ Created 星期一 05 十月 2015
 * chrome 开启devtool protocol的选项：--remote-debugging-port=9222 --remote-debugging-address=0.0.0.0 (address必须是headless时才生效)
 * chrome远程调试：chrome://inspect/#devices
 * 也可以用chrome直接打开远程调试的端口，可以链接到调试页面
+* chrome debug连不上docker里面的chrome了
+
+两个坑：
+1. docker 的-p 端口映射是不能把docker里面起在127.0.0.1上的端口映射到外面  （大概没错），通常docker里的服务都要起在0.0.0.0上
+
+2. chrome 有头模式，是只能起在127.0.0.1上的。 --remote-debugging-address=0.0.0.0  这个参数只有headless时候才生效
+
+所以导致的就是：docker里的有头chrome就是连不上，要连得在docker里做端口转发先转到0.0.0.0上，再用-p参数映射到外面
+无头chrome 加参数--remote-debugging-address=0.0.0.0 后就可以直接-p映射到外面
