@@ -100,8 +100,6 @@ Created 星期三 29 七月 2015
     分析：
     1. logging.info直接调用，会内置调用logging.basicConfig函数，basicConfig函数会创建一个StreamHandler加到root handlers列表，该handlers打印级别是NOSET，应该是跟随root的打印级别;
         logging.root打印级别保持warning(30);
-        import logging
-        logging.info(
     2. phoenixdb 直接使用logging.getLogger(__name__)来获取日志对象，其打印级别、handler应该是跟随root
     3. 而scrapy默认会把logging.root的打印级别弄成NOSET(0), 导致phoenixdb的打印对象在打印级别是0的StreamHandler, 同时其打印级别跟随root又正好也是0, 因此phoenixdb打印所有日志
     4. if no logging configuration is provided, then:
