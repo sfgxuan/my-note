@@ -5,7 +5,7 @@ Creation-Date: 2018-08-14T12:25:16+08:00
 ====== tidb ======
 Created 星期二 14 八月 2018
 
-* 查看ddl语句：admin show ddl;
+* 查看ddl语句：admin show ddl; admin show ddl jobs; admin cancel ddl jobs;
 * SET autocommit=1;
   SET @@session.tidb_batch_insert=ON;
   SET @@session.tidb_dml_batch_size=50000;

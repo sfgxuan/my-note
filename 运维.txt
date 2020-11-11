@@ -121,5 +121,13 @@ Created 星期二 05 一月 2016
     配置文件：/etc/rundeck/rundeck-config.groovy
     resource文件路径: /var/rundeck/projects/etc/resources.xml
     公钥私钥位置：/var/lib/rundeck/.ssh/id_rsa
-	
+
+* 查看进程系统调用情况:
+    strace -f -p $pid
+    strace -fc -p $pid
+* perf分析程序:
+    perf top
+    perf record -p $pid
+    perf report
+
 
