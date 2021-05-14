@@ -152,3 +152,6 @@ PS: 此招可以使得cpu温度均在80以下
 
    2）为啥在代理服务这程序之间，再挂一层charles就又可以了？
    HTTP CONNECT是赂charles发起的，charles返回的HTTP 200经抓包发现直接没有Transfer-Encoding: chunked这个头部，根据上面的分析自然是可以的
+
+   3) 为啥http可以，https不行？
+   http代理没有CONNECT这一下
